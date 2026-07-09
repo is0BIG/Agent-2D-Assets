@@ -17,13 +17,65 @@ from PIL import Image
 MAGENTA = (255, 0, 255)
 
 
+def parse_color(value: str) -> tuple[int, int, int]:
+    text = value.strip()
+    if text.startswith("#"):
+        text = text[1:]
+    if "," in text:
+        parts = [int(part.strip()) for part in text.split(",")]
+        if len(parts) == 3 and all(0 <= part <= 255 for part in parts):
+            return parts[0], parts[1], parts[2]
+    if len(text) == 6:
+        return int(text[0:2], 16), int(text[2:4], 16), int(text[4:6], 16)
+    raise ValueError(f"Invalid color '{value}'. Use #RRGGBB or R,G,B.")
+
+
 def color_distance(rgb: tuple[int, int, int], target: tuple[int, int, int] = MAGENTA) -> float:
     r, g, b = rgb
     tr, tg, tb = target
     return math.sqrt((r - tr) ** 2 + (g - tg) ** 2 + (b - tb) ** 2)
 
 
-def remove_bg_magenta(img: Image.Image, threshold: int, edge_threshold: int) -> Image.Image:
+def despill_rgb(
+    rgb: tuple[int, int, int],
+    key_color: tuple[int, int, int],
+    alpha_factor: float,
+) -> tuple[int, int, int]:
+    alpha_factor = max(0.15, min(1.0, alpha_factor))
+    return tuple(
+        max(0, min(255, round((channel - (1.0 - alpha_factor) * key) / alpha_factor)))
+        for channel, key in zip(rgb, key_color)
+    )
+
+
+def soften_key_pixel(
+    rgb: tuple[int, int, int],
+    alpha: int,
+    *,
+    key_color: tuple[int, int, int],
+    tolerance: int,
+    feather: int,
+    despill: bool,
+) -> tuple[int, int, int, int]:
+    distance = color_distance(rgb, key_color)
+    if distance <= tolerance:
+        return 0, 0, 0, 0
+    if feather > 0 and distance <= tolerance + feather:
+        alpha_factor = (distance - tolerance) / feather
+        out_rgb = despill_rgb(rgb, key_color, alpha_factor) if despill else rgb
+        return out_rgb[0], out_rgb[1], out_rgb[2], max(0, min(255, round(alpha * alpha_factor)))
+    return rgb[0], rgb[1], rgb[2], alpha
+
+
+def remove_bg_magenta(
+    img: Image.Image,
+    threshold: int,
+    edge_threshold: int,
+    *,
+    key_color: tuple[int, int, int] = MAGENTA,
+    edge_feather: int = 0,
+    despill: bool = False,
+) -> Image.Image:
     img = img.convert("RGBA")
     pixels = img.load()
     width, height = img.size
@@ -31,8 +83,15 @@ def remove_bg_magenta(img: Image.Image, threshold: int, edge_threshold: int) -> 
     for x in range(width):
         for y in range(height):
             r, g, b, a = pixels[x, y]
-            if a > 0 and color_distance((r, g, b)) < threshold:
-                pixels[x, y] = (0, 0, 0, 0)
+            if a > 0:
+                pixels[x, y] = soften_key_pixel(
+                    (r, g, b),
+                    a,
+                    key_color=key_color,
+                    tolerance=threshold,
+                    feather=edge_feather,
+                    despill=despill,
+                )
 
     visited: set[tuple[int, int]] = set()
     queue: deque[tuple[int, int]] = deque()
@@ -49,9 +108,20 @@ def remove_bg_magenta(img: Image.Image, threshold: int, edge_threshold: int) -> 
             continue
         visited.add((x, y))
         r, g, b, a = pixels[x, y]
+        distance = color_distance((r, g, b), key_color)
         should_expand = a == 0
-        if a > 0 and color_distance((r, g, b)) < edge_threshold:
+        if a > 0 and distance <= edge_threshold:
             pixels[x, y] = (0, 0, 0, 0)
+            should_expand = True
+        elif a > 0 and edge_feather > 0 and distance <= edge_threshold + edge_feather:
+            pixels[x, y] = soften_key_pixel(
+                (r, g, b),
+                a,
+                key_color=key_color,
+                tolerance=edge_threshold,
+                feather=edge_feather,
+                despill=despill,
+            )
             should_expand = True
         if should_expand:
             for dx in (-1, 0, 1):
@@ -74,7 +144,13 @@ def trim_border(img: Image.Image, px: int) -> Image.Image:
     return img.crop((px, px, width - px, height - px))
 
 
-def clean_edges(img: Image.Image, depth: int) -> Image.Image:
+def clean_edges(
+    img: Image.Image,
+    depth: int,
+    *,
+    key_color: tuple[int, int, int] = MAGENTA,
+    edge_threshold: int = 150,
+) -> Image.Image:
     if depth <= 0:
         return img
     pixels = img.load()
@@ -84,13 +160,13 @@ def clean_edges(img: Image.Image, depth: int) -> Image.Image:
             for y in (d, height - 1 - d):
                 if 0 <= y < height:
                     r, g, b, a = pixels[x, y]
-                    if a > 0 and ((r < 40 and g < 40 and b < 40) or color_distance((r, g, b)) < 150):
+                    if a > 0 and ((r < 40 and g < 40 and b < 40) or color_distance((r, g, b), key_color) < edge_threshold):
                         pixels[x, y] = (0, 0, 0, 0)
         for y in range(height):
             for x in (d, width - 1 - d):
                 if 0 <= x < width:
                     r, g, b, a = pixels[x, y]
-                    if a > 0 and ((r < 40 and g < 40 and b < 40) or color_distance((r, g, b)) < 150):
+                    if a > 0 and ((r < 40 and g < 40 and b < 40) or color_distance((r, g, b), key_color) < edge_threshold):
                         pixels[x, y] = (0, 0, 0, 0)
     return img
 
@@ -205,7 +281,12 @@ def extract_cell(
     args: argparse.Namespace,
 ) -> tuple[Image.Image | None, dict[str, object]]:
     frame = trim_border(cell, args.trim_border)
-    frame = clean_edges(frame, args.edge_clean_depth)
+    frame = clean_edges(
+        frame,
+        args.edge_clean_depth,
+        key_color=args.key_color_rgb,
+        edge_threshold=args.edge_threshold,
+    )
     components = connected_components(frame, args.min_component_area)
     selected_component = None
     bbox = alpha_bbox(frame)
@@ -235,6 +316,12 @@ def extract_cell(
 
 def iter_cells(img: Image.Image, rows: int, cols: int) -> Iterable[tuple[int, int, tuple[int, int, int, int], Image.Image]]:
     width, height = img.size
+    if rows <= 0 or cols <= 0:
+        raise ValueError("Grid rows and cols must be positive.")
+    if width % cols != 0 or height % rows != 0:
+        raise ValueError(
+            f"Image size {width}x{height} is not evenly divisible by grid {rows}x{cols}."
+        )
     cell_width = width // cols
     cell_height = height // rows
     for row in range(rows):
@@ -252,8 +339,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--manifest", type=Path)
     parser.add_argument("--labels", help="Comma-separated labels in row-major order.")
     parser.add_argument("--labels-file", type=Path)
+    parser.add_argument("--key-color", default="#ff00ff", help="Chroma key color as #RRGGBB or R,G,B.")
+    parser.add_argument("--tolerance", type=int, help="Alias for --threshold; overrides --threshold when set.")
     parser.add_argument("--threshold", type=int, default=100)
     parser.add_argument("--edge-threshold", type=int, default=150)
+    parser.add_argument("--edge-feather", type=int, default=0)
+    parser.add_argument("--despill", action="store_true")
     parser.add_argument("--trim-border", type=int, default=4)
     parser.add_argument("--edge-clean-depth", type=int, default=2)
     parser.add_argument("--component-mode", choices=["all", "largest"], default="largest")
@@ -267,12 +358,21 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main() -> None:
     args = build_parser().parse_args()
+    args.threshold = args.tolerance if args.tolerance is not None else args.threshold
+    args.key_color_rgb = parse_color(args.key_color)
     expected_count = args.rows * args.cols
     labels = parse_labels(args, expected_count)
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
     raw = Image.open(args.input).convert("RGBA")
-    cleaned = remove_bg_magenta(raw, args.threshold, args.edge_threshold)
+    cleaned = remove_bg_magenta(
+        raw,
+        args.threshold,
+        args.edge_threshold,
+        key_color=args.key_color_rgb,
+        edge_feather=args.edge_feather,
+        despill=args.despill,
+    )
     manifest_path = args.manifest or (args.output_dir / "prop-pack.json")
     accepted: list[dict[str, object]] = []
     rejected: list[dict[str, object]] = []
@@ -314,8 +414,12 @@ def main() -> None:
         "input": str(args.input),
         "rows": args.rows,
         "cols": args.cols,
+        "key_color": f"#{args.key_color_rgb[0]:02x}{args.key_color_rgb[1]:02x}{args.key_color_rgb[2]:02x}",
         "threshold": args.threshold,
+        "tolerance": args.threshold,
         "edge_threshold": args.edge_threshold,
+        "edge_feather": args.edge_feather,
+        "despill": args.despill,
         "component_mode": args.component_mode,
         "component_padding": args.component_padding,
         "min_component_area": args.min_component_area,

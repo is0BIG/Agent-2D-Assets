@@ -1,0 +1,86 @@
+[gd_scene load_steps=9 format=3 uid="uid://agent_sprite_forge_minimal"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_player_script"]
+[ext_resource type="Texture2D" path="res://assets/player.svg" id="2_player_texture"]
+[ext_resource type="Texture2D" path="res://assets/floor.svg" id="3_floor_texture"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_player"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_player_texture")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_player_texture")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_player_texture")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape_player"]
+size = Vector2(24, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape_top"]
+size = Vector2(520, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape_side"]
+size = Vector2(18, 220)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape_bottom"]
+size = Vector2(520, 18)
+
+[node name="Main" type="Node2D"]
+
+[node name="Floor" type="Sprite2D" parent="."]
+texture = ExtResource("3_floor_texture")
+centered = false
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(320, 180)
+script = ExtResource("1_player_script")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
+sprite_frames = SubResource("SpriteFrames_player")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+position = Vector2(0, 6)
+shape = SubResource("RectangleShape_player")
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="Top" type="StaticBody2D" parent="Walls"]
+position = Vector2(320, 80)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Top"]
+shape = SubResource("RectangleShape_top")
+
+[node name="Bottom" type="StaticBody2D" parent="Walls"]
+position = Vector2(320, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Bottom"]
+shape = SubResource("RectangleShape_bottom")
+
+[node name="Left" type="StaticBody2D" parent="Walls"]
+position = Vector2(70, 190)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Left"]
+shape = SubResource("RectangleShape_side")
+
+[node name="Right" type="StaticBody2D" parent="Walls"]
+position = Vector2(570, 190)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Right"]
+shape = SubResource("RectangleShape_side")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+enabled = true

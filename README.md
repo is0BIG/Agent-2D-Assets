@@ -440,6 +440,13 @@ cp -R ./skills/* ~/.codex/skills/
 
 Start a new Codex session after installation so the skills are loaded cleanly.
 
+## Documentation
+
+- [Troubleshooting](./docs/troubleshooting.md)
+- [中文使用手册](./docs/中文使用手册.md)
+- [Minimal Godot demo](./examples/godot-minimal)
+- [Minimal Unity demo](./examples/unity-minimal)
+
 ## Python Requirements
 
 The local post-processor depends on:
@@ -458,7 +465,11 @@ agent-sprite-forge/
   README.zh-CN.md
   README.ja.md
   README.ko.md
+  CHANGELOG.md
+  VERSION
   requirements.txt
+  docs/
+  examples/
   src/
   skills/
     generate2dmap/
@@ -481,6 +492,9 @@ agent-sprite-forge/
         prompt-rules.md
       scripts/
         generate2dsprite.py
+        generate_qc_report.py
+        image_provider.py
+        import_generated_image.py
         make_layout_guide.py
 ```
 
@@ -527,6 +541,9 @@ For a typical sprite sheet output:
 - `sheet-transparent.png`
 - Frame PNGs
 - `animation.gif`
+- optional `animation.png` APNG preview
+- optional `animation.webp` lossless animated WebP preview
+- optional `qc-report.html`
 - `prompt-used.txt`
 - `pipeline-meta.json`
 

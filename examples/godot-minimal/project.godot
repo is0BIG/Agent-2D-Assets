@@ -1,0 +1,10 @@
+; Engine configuration file.
+; This minimal project is intended for Godot 4.x.
+
+config_version=5
+
+[application]
+
+config/name="Agent Sprite Forge Minimal Demo"
+run/main_scene="res://scenes/Main.tscn"
+config/features=PackedStringArray("4.0")

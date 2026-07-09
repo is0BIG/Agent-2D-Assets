@@ -17,8 +17,8 @@ from PIL import Image
 
 
 ART_STYLE = (
-    "Original digital monster creature. Digimon/Pokemon inspired pixel art, "
-    "strong outlines, dynamic, battle-ready. NOT cute, NOT round. "
+    "Original digital monster or creature game sprite. Pixel art, strong outlines, "
+    "clear silhouette, and mood matching the user's request. "
     "SOLID COLORED BODY. Background is 100% solid flat magenta (#FF00FF), no gradients. "
     "NO text, NO labels, NO words, NO letters anywhere."
 )
@@ -37,7 +37,7 @@ GRID_RULES = (
     "1. EXACTLY 4 equal quadrants (2x2). "
     "2. NO borders, NO lines, NO frames between quadrants. "
     "3. NO text, NO labels. "
-    "4. Each character fills 80%+ of its quadrant, SAME SIZE in every quadrant. "
+    "4. Each character fills about 60% to 70% of its quadrant, SAME SIZE in every quadrant. "
     "5. Quadrants connected by magenta background only."
 )
 
@@ -386,20 +386,81 @@ def build_prompt(target: str, mode: str, prompt: str, role: str | None = None, s
     return result, seed
 
 
-def remove_bg_magenta(img: Image.Image, threshold: int = 100, edge_threshold: int = 150) -> Image.Image:
+def parse_color(value: str) -> tuple[int, int, int]:
+    text = value.strip()
+    if text.startswith("#"):
+        text = text[1:]
+    if "," in text:
+        parts = [int(part.strip()) for part in text.split(",")]
+        if len(parts) == 3 and all(0 <= part <= 255 for part in parts):
+            return parts[0], parts[1], parts[2]
+    if len(text) == 6:
+        return int(text[0:2], 16), int(text[2:4], 16), int(text[4:6], 16)
+    raise ValueError(f"Invalid color '{value}'. Use #RRGGBB or R,G,B.")
+
+
+def color_distance(rgb: tuple[int, int, int], target: tuple[int, int, int]) -> float:
+    r, g, b = rgb
+    tr, tg, tb = target
+    return math.sqrt((r - tr) ** 2 + (g - tg) ** 2 + (b - tb) ** 2)
+
+
+def despill_rgb(
+    rgb: tuple[int, int, int],
+    key_color: tuple[int, int, int],
+    alpha_factor: float,
+) -> tuple[int, int, int]:
+    alpha_factor = max(0.15, min(1.0, alpha_factor))
+    return tuple(
+        max(0, min(255, round((channel - (1.0 - alpha_factor) * key) / alpha_factor)))
+        for channel, key in zip(rgb, key_color)
+    )
+
+
+def soften_key_pixel(
+    rgb: tuple[int, int, int],
+    alpha: int,
+    *,
+    key_color: tuple[int, int, int],
+    tolerance: int,
+    feather: int,
+    despill: bool,
+) -> tuple[int, int, int, int]:
+    distance = color_distance(rgb, key_color)
+    if distance <= tolerance:
+        return 0, 0, 0, 0
+    if feather > 0 and distance <= tolerance + feather:
+        alpha_factor = (distance - tolerance) / feather
+        out_rgb = despill_rgb(rgb, key_color, alpha_factor) if despill else rgb
+        return out_rgb[0], out_rgb[1], out_rgb[2], max(0, min(255, round(alpha * alpha_factor)))
+    return rgb[0], rgb[1], rgb[2], alpha
+
+
+def remove_bg_magenta(
+    img: Image.Image,
+    threshold: int = 100,
+    edge_threshold: int = 150,
+    *,
+    key_color: tuple[int, int, int] = (255, 0, 255),
+    edge_feather: int = 0,
+    despill: bool = False,
+) -> Image.Image:
     pixels = img.load()
     width, height = img.size
-
-    def dist(r: int, g: int, b: int) -> float:
-        return math.sqrt((r - 255) ** 2 + g**2 + (b - 255) ** 2)
 
     for x in range(width):
         for y in range(height):
             r, g, b, a = pixels[x, y]
             if a == 0:
                 continue
-            if dist(r, g, b) < threshold:
-                pixels[x, y] = (0, 0, 0, 0)
+            pixels[x, y] = soften_key_pixel(
+                (r, g, b),
+                a,
+                key_color=key_color,
+                tolerance=threshold,
+                feather=edge_feather,
+                despill=despill,
+            )
 
     visited: set[tuple[int, int]] = set()
     queue: deque[tuple[int, int]] = deque()
@@ -416,6 +477,7 @@ def remove_bg_magenta(img: Image.Image, threshold: int = 100, edge_threshold: in
             continue
         visited.add((x, y))
         r, g, b, a = pixels[x, y]
+        distance = color_distance((r, g, b), key_color)
         if a == 0:
             for dx in (-1, 0, 1):
                 for dy in (-1, 0, 1):
@@ -423,8 +485,23 @@ def remove_bg_magenta(img: Image.Image, threshold: int = 100, edge_threshold: in
                         continue
                     if (x + dx, y + dy) not in visited:
                         queue.append((x + dx, y + dy))
-        elif dist(r, g, b) < edge_threshold:
+        elif distance <= edge_threshold:
             pixels[x, y] = (0, 0, 0, 0)
+            for dx in (-1, 0, 1):
+                for dy in (-1, 0, 1):
+                    if dx == 0 and dy == 0:
+                        continue
+                    if (x + dx, y + dy) not in visited:
+                        queue.append((x + dx, y + dy))
+        elif edge_feather > 0 and distance <= edge_threshold + edge_feather:
+            pixels[x, y] = soften_key_pixel(
+                (r, g, b),
+                a,
+                key_color=key_color,
+                tolerance=edge_threshold,
+                feather=edge_feather,
+                despill=despill,
+            )
             for dx in (-1, 0, 1):
                 for dy in (-1, 0, 1):
                     if dx == 0 and dy == 0:
@@ -441,7 +518,13 @@ def trim_border(img: Image.Image, px: int = 4) -> Image.Image:
     return img
 
 
-def clean_edges(img: Image.Image, depth: int = 3) -> Image.Image:
+def clean_edges(
+    img: Image.Image,
+    depth: int = 3,
+    *,
+    key_color: tuple[int, int, int] = (255, 0, 255),
+    edge_threshold: int = 150,
+) -> Image.Image:
     pixels = img.load()
     width, height = img.size
     for d in range(depth):
@@ -452,7 +535,7 @@ def clean_edges(img: Image.Image, depth: int = 3) -> Image.Image:
                 r, g, b, a = pixels[x, y]
                 if a == 0:
                     continue
-                if (r < 40 and g < 40 and b < 40) or math.sqrt((r - 255) ** 2 + g**2 + (b - 255) ** 2) < 150:
+                if (r < 40 and g < 40 and b < 40) or color_distance((r, g, b), key_color) < edge_threshold:
                     pixels[x, y] = (0, 0, 0, 0)
         for y in range(height):
             for x in (d, width - 1 - d):
@@ -461,7 +544,7 @@ def clean_edges(img: Image.Image, depth: int = 3) -> Image.Image:
                 r, g, b, a = pixels[x, y]
                 if a == 0:
                     continue
-                if (r < 40 and g < 40 and b < 40) or math.sqrt((r - 255) ** 2 + g**2 + (b - 255) ** 2) < 150:
+                if (r < 40 and g < 40 and b < 40) or color_distance((r, g, b), key_color) < edge_threshold:
                     pixels[x, y] = (0, 0, 0, 0)
     return img
 
@@ -480,6 +563,7 @@ def connected_components(img: Image.Image, min_area: int = 1) -> list[dict[str, 
             queue: deque[tuple[int, int]] = deque([(x, y)])
             visited[y][x] = True
             area = 0
+            coords: list[tuple[int, int]] = []
             min_x = max_x = x
             min_y = max_y = y
             touches_edge = x == 0 or y == 0 or x == width - 1 or y == height - 1
@@ -487,6 +571,7 @@ def connected_components(img: Image.Image, min_area: int = 1) -> list[dict[str, 
             while queue:
                 cx, cy = queue.popleft()
                 area += 1
+                coords.append((cx, cy))
                 min_x = min(min_x, cx)
                 min_y = min(min_y, cy)
                 max_x = max(max_x, cx)
@@ -505,6 +590,7 @@ def connected_components(img: Image.Image, min_area: int = 1) -> list[dict[str, 
                         "area": area,
                         "bbox": (min_x, min_y, max_x + 1, max_y + 1),
                         "touches_edge": touches_edge,
+                        "coords": coords,
                     }
                 )
 
@@ -522,6 +608,15 @@ def pad_bbox(bbox: tuple[int, int, int, int], padding: int, width: int, height: 
     )
 
 
+def mask_to_component(img: Image.Image, component: dict[str, object]) -> Image.Image:
+    selected = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    src = img.load()
+    dst = selected.load()
+    for x, y in component["coords"]:  # type: ignore[index]
+        dst[x, y] = src[x, y]
+    return selected
+
+
 def bbox_touches_edge(
     bbox: tuple[int, int, int, int] | None, width: int, height: int, margin: int = 0
 ) -> bool:
@@ -531,8 +626,24 @@ def bbox_touches_edge(
     return x0 <= margin or y0 <= margin or x1 >= width - margin or y1 >= height - margin
 
 
-def center_single_sprite(img: Image.Image, size: int, threshold: int, edge_threshold: int) -> Image.Image:
-    cleaned = remove_bg_magenta(img.convert("RGBA"), threshold, edge_threshold)
+def center_single_sprite(
+    img: Image.Image,
+    size: int,
+    threshold: int,
+    edge_threshold: int,
+    *,
+    key_color: tuple[int, int, int] = (255, 0, 255),
+    edge_feather: int = 0,
+    despill: bool = False,
+) -> Image.Image:
+    cleaned = remove_bg_magenta(
+        img.convert("RGBA"),
+        threshold,
+        edge_threshold,
+        key_color=key_color,
+        edge_feather=edge_feather,
+        despill=despill,
+    )
     bbox = cleaned.getbbox()
     if bbox:
         cleaned = cleaned.crop(bbox)
@@ -563,9 +674,25 @@ def split_grid(
     component_padding: int = 0,
     min_component_area: int = 1,
     edge_touch_margin: int = 0,
+    key_color: tuple[int, int, int] = (255, 0, 255),
+    edge_feather: int = 0,
+    despill: bool = False,
 ) -> tuple[list[Image.Image], list[dict[str, object]]]:
-    cleaned = remove_bg_magenta(img.convert("RGBA"), threshold, edge_threshold)
+    cleaned = remove_bg_magenta(
+        img.convert("RGBA"),
+        threshold,
+        edge_threshold,
+        key_color=key_color,
+        edge_feather=edge_feather,
+        despill=despill,
+    )
     width, height = cleaned.size
+    if rows <= 0 or cols <= 0:
+        raise ValueError("Grid rows and cols must be positive.")
+    if width % cols != 0 or height % rows != 0:
+        raise ValueError(
+            f"Image size {width}x{height} is not evenly divisible by grid {rows}x{cols}."
+        )
     cell_width, cell_height = width // cols, height // rows
     cropped_frames: list[Image.Image] = []
     frame_info: list[dict[str, object]] = []
@@ -576,13 +703,20 @@ def split_grid(
             if trim_border_px > 0:
                 frame = trim_border(frame, px=trim_border_px)
             if edge_clean_depth > 0:
-                frame = clean_edges(frame, depth=edge_clean_depth)
+                frame = clean_edges(
+                    frame,
+                    depth=edge_clean_depth,
+                    key_color=key_color,
+                    edge_threshold=edge_threshold,
+                )
             components = connected_components(frame, min_area=min_component_area)
+            qc_width, qc_height = frame.size
             bbox = None
             selected_component = None
             if component_mode == "largest" and components:
                 selected_component = components[0]
-                bbox = pad_bbox(tuple(selected_component["bbox"]), component_padding, frame.width, frame.height)
+                frame = mask_to_component(frame, selected_component)
+                bbox = pad_bbox(tuple(selected_component["bbox"]), component_padding, qc_width, qc_height)
             else:
                 bbox = frame.getbbox()
             if bbox:
@@ -597,7 +731,7 @@ def split_grid(
                     "selected_component_area": int(selected_component["area"]) if selected_component else None,
                     "selected_component_bbox": list(selected_component["bbox"]) if selected_component else None,
                     "crop_bbox": list(bbox) if bbox else None,
-                    "edge_touch": bbox_touches_edge(bbox, cell_width, cell_height, edge_touch_margin),
+                    "edge_touch": bbox_touches_edge(bbox, qc_width, qc_height, edge_touch_margin),
                 }
             )
 
@@ -705,6 +839,36 @@ def save_transparent_gif(frames: list[Image.Image], out_path: Path, duration: in
     )
 
 
+def save_apng(frames: list[Image.Image], out_path: Path, duration: int) -> None:
+    if not frames:
+        raise ValueError("No frames to encode.")
+    frames[0].save(
+        out_path,
+        format="PNG",
+        save_all=True,
+        append_images=frames[1:],
+        duration=duration,
+        loop=0,
+        disposal=2,
+    )
+
+
+def save_webp(frames: list[Image.Image], out_path: Path, duration: int) -> None:
+    if not frames:
+        raise ValueError("No frames to encode.")
+    frames[0].save(
+        out_path,
+        format="WEBP",
+        save_all=True,
+        append_images=frames[1:],
+        duration=duration,
+        loop=0,
+        lossless=True,
+        quality=100,
+        method=6,
+    )
+
+
 def sanitize_slug(text: str) -> str:
     slug = re.sub(r"[^a-zA-Z0-9]+", "-", text.strip().lower()).strip("-")
     return slug or "sprite"
@@ -753,15 +917,27 @@ def cmd_process(args: argparse.Namespace) -> None:
     out_dir = args.output_dir
     out_dir.mkdir(parents=True, exist_ok=True)
 
+    threshold = args.tolerance if args.tolerance is not None else args.threshold
+    key_color = parse_color(args.key_color)
+    prompt_text = args.prompt or ""
+    if args.prompt_file:
+        if not args.prompt_file.exists():
+            raise FileNotFoundError(f"Prompt file not found: {args.prompt_file}")
+        prompt_text = args.prompt_file.read_text(encoding="utf-8")
+
     raw = Image.open(args.input).convert("RGBA")
     metadata = {
         "target": args.target,
         "mode": args.mode,
-        "prompt": args.prompt or "",
+        "prompt": prompt_text,
         "role": args.role or "",
         "input": str(args.input),
-        "threshold": args.threshold,
+        "key_color": f"#{key_color[0]:02x}{key_color[1]:02x}{key_color[2]:02x}",
+        "threshold": threshold,
+        "tolerance": threshold,
         "edge_threshold": args.edge_threshold,
+        "edge_feather": args.edge_feather,
+        "despill": args.despill,
         "duration": args.duration,
     }
 
@@ -776,7 +952,14 @@ def cmd_process(args: argparse.Namespace) -> None:
             rows, cols = GRID_SHAPES[args.mode]
         cell_size = args.cell_size or (96 if (rows, cols) == (4, 4) else 128)
         raw.save(out_dir / "raw-sheet.png")
-        cleaned = remove_bg_magenta(raw.copy(), args.threshold, args.edge_threshold)
+        cleaned = remove_bg_magenta(
+            raw.copy(),
+            threshold,
+            args.edge_threshold,
+            key_color=key_color,
+            edge_feather=args.edge_feather,
+            despill=args.despill,
+        )
         cleaned.save(out_dir / "raw-sheet-clean.png")
 
         frames, frame_qc = split_grid(
@@ -784,7 +967,7 @@ def cmd_process(args: argparse.Namespace) -> None:
             rows,
             cols,
             cell_size,
-            args.threshold,
+            threshold,
             args.edge_threshold,
             fit_scale=args.fit_scale,
             trim_border_px=args.trim_border,
@@ -795,6 +978,9 @@ def cmd_process(args: argparse.Namespace) -> None:
             component_padding=args.component_padding,
             min_component_area=args.min_component_area,
             edge_touch_margin=args.edge_touch_margin,
+            key_color=key_color,
+            edge_feather=args.edge_feather,
+            despill=args.despill,
         )
         if has_custom_grid:
             prefix = args.label_prefix or args.mode
@@ -812,9 +998,17 @@ def cmd_process(args: argparse.Namespace) -> None:
                 row_frames = frames[row_index * cols : (row_index + 1) * cols]
                 compose_sheet(row_frames, 1, cols, cell_size).save(out_dir / f"{direction}-strip.png")
                 save_transparent_gif(row_frames, out_dir / f"{direction}.gif", args.duration)
+                if args.apng:
+                    save_apng(row_frames, out_dir / f"{direction}.png", args.duration)
+                if args.webp:
+                    save_webp(row_frames, out_dir / f"{direction}.webp", args.duration)
             metadata["directions"] = directions
         else:
             save_transparent_gif(frames, out_dir / "animation.gif", args.duration)
+            if args.apng:
+                save_apng(frames, out_dir / "animation.png", args.duration)
+            if args.webp:
+                save_webp(frames, out_dir / "animation.webp", args.duration)
 
         metadata["rows"] = rows
         metadata["cols"] = cols
@@ -824,6 +1018,8 @@ def cmd_process(args: argparse.Namespace) -> None:
         metadata["edge_clean_depth"] = args.edge_clean_depth
         metadata["align"] = args.align
         metadata["shared_scale"] = args.shared_scale
+        metadata["apng"] = args.apng
+        metadata["webp"] = args.webp
         metadata["component_mode"] = args.component_mode
         metadata["component_padding"] = args.component_padding
         metadata["min_component_area"] = args.min_component_area
@@ -837,15 +1033,20 @@ def cmd_process(args: argparse.Namespace) -> None:
             raise ValueError(f"Frames touch a cell edge: {metadata['edge_touch_frames']}")
     else:
         raw.save(out_dir / "raw.png")
-        centered = center_single_sprite(raw, args.single_size, args.threshold, args.edge_threshold)
+        centered = center_single_sprite(
+            raw,
+            args.single_size,
+            threshold,
+            args.edge_threshold,
+            key_color=key_color,
+            edge_feather=args.edge_feather,
+            despill=args.despill,
+        )
         centered.save(out_dir / "clean.png")
         metadata["single_size"] = args.single_size
 
-    if args.prompt_file and args.prompt_file.exists():
-        prompt_text = args.prompt_file.read_text(encoding="utf-8")
+    if prompt_text:
         (out_dir / "prompt-used.txt").write_text(prompt_text, encoding="utf-8")
-    elif args.prompt:
-        (out_dir / "prompt-used.txt").write_text(args.prompt, encoding="utf-8")
 
     (out_dir / "pipeline-meta.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     print(str(out_dir.resolve()))
@@ -857,7 +1058,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     subparsers.add_parser("list-options", help="Print supported targets, modes, and NPC roles.")
 
-    build_prompt_parser = subparsers.add_parser("build-prompt", help="Build a generation prompt.")
+    build_prompt_parser = subparsers.add_parser("build-prompt", help="Build a legacy generation prompt.")
     build_prompt_parser.add_argument("--target", required=True, choices=sorted(TARGET_MODES))
     build_prompt_parser.add_argument("--mode", required=True)
     build_prompt_parser.add_argument("--prompt", required=True)
@@ -874,8 +1075,12 @@ def build_parser() -> argparse.ArgumentParser:
     process_parser.add_argument("--role")
     process_parser.add_argument("--prompt")
     process_parser.add_argument("--prompt-file", type=Path)
+    process_parser.add_argument("--key-color", default="#ff00ff", help="Chroma key color as #RRGGBB or R,G,B.")
+    process_parser.add_argument("--tolerance", type=int, help="Alias for --threshold; overrides --threshold when set.")
     process_parser.add_argument("--threshold", type=int, default=100)
     process_parser.add_argument("--edge-threshold", type=int, default=150)
+    process_parser.add_argument("--edge-feather", type=int, default=0)
+    process_parser.add_argument("--despill", action="store_true")
     process_parser.add_argument("--cell-size", type=int)
     process_parser.add_argument("--rows", type=int)
     process_parser.add_argument("--cols", type=int)
@@ -892,6 +1097,8 @@ def build_parser() -> argparse.ArgumentParser:
     process_parser.add_argument("--reject-edge-touch", action="store_true")
     process_parser.add_argument("--single-size", type=int, default=256)
     process_parser.add_argument("--duration", type=int, default=200)
+    process_parser.add_argument("--apng", action="store_true", help="Export animated PNG previews.")
+    process_parser.add_argument("--webp", action="store_true", help="Export lossless animated WebP previews.")
 
     return parser
 
