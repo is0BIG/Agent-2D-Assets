@@ -1,6 +1,6 @@
 # Generate2DAudio 中文使用手册
 
-`$generate2daudio` 是 Agent Sprite Forge 新增的 2D 游戏音频技能。它面向 Codex 工作流：Codex 负责判断需要什么声音包，本地 Python 脚本负责生成简单音效、清理已有 WAV、分析音量和导出元数据。
+`$generate2daudio` 是 Agent-2D-Assets 新增的 2D 游戏音频技能。它面向 Codex 工作流：Codex 负责判断需要什么声音包，本地 Python 脚本负责生成简单音效、清理已有 WAV、分析音量和导出元数据。
 
 ## 适合做什么
 

@@ -1,9 +1,9 @@
-# Agent Sprite Forge
+# Agent-2D-Assets
 
 Languages: [English](./README.md) | [繁體中文](./README.zh-TW.md) | [简体中文](./README.zh-CN.md) | [日本語](./README.ja.md) | [한국어](./README.ko.md)
 
 <p align="center">
-  <img src="./src/banner.png" alt="Agent Sprite Forge banner" width="900" />
+  <img src="./src/banner.png" alt="Agent-2D-Assets banner" width="900" />
 </p>
 
 <p align="center">
@@ -24,7 +24,7 @@ Languages: [English](./README.md) | [繁體中文](./README.zh-TW.md) | [简体�
 
 ## What Makes It Different
 
-Agent Sprite Forge is not just a folder of prompts. It is a Codex-first 2D game asset workflow where the agent decides the plan, image generation creates the raw visuals, and deterministic scripts turn those visuals into reusable game assets.
+Agent-2D-Assets is not just a folder of prompts. It is a Codex-first 2D game asset workflow where the agent decides the plan, image generation creates the raw visuals, and deterministic scripts turn those visuals into reusable game assets.
 
 <table>
   <tr>
@@ -51,7 +51,7 @@ Agent Sprite Forge is not just a folder of prompts. It is a Codex-first 2D game 
 
 ### Engine-Ready Prototypes
 
-These examples were assembled with Codex using `agent-sprite-forge` workflows. They are meant to show the full loop: generated assets, structured scene data, and playable prototype wiring.
+These examples were assembled with Codex using `Agent-2D-Assets` workflows. They are meant to show the full loop: generated assets, structured scene data, and playable prototype wiring.
 
 <table>
   <tr>
@@ -421,8 +421,8 @@ The script is not the creative brain. The agent makes the visual and pipeline de
 Clone the repo, install the local processor dependencies, then copy the skills into your Codex skills directory:
 
 ```powershell
-git clone https://github.com/0x0funky/agent-sprite-forge.git
-cd .\agent-sprite-forge
+git clone https://github.com/is0BIG/Agent-2D-Assets.git
+cd .\Agent-2D-Assets
 python -m pip install -r .\requirements.txt
 New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.codex\skills" | Out-Null
 Copy-Item -Recurse -Force `
@@ -433,8 +433,8 @@ Copy-Item -Recurse -Force `
 ### Option 2: macOS / Linux
 
 ```bash
-git clone https://github.com/0x0funky/agent-sprite-forge.git
-cd ./agent-sprite-forge
+git clone https://github.com/is0BIG/Agent-2D-Assets.git
+cd ./Agent-2D-Assets
 python3 -m pip install -r ./requirements.txt
 mkdir -p ~/.codex/skills
 cp -R ./skills/* ~/.codex/skills/
@@ -464,7 +464,7 @@ The audio skill uses Python's standard library for WAV synthesis, processing, an
 ## Repository Layout
 
 ```text
-agent-sprite-forge/
+Agent-2D-Assets/
   README.md
   README.zh-TW.md
   README.zh-CN.md
@@ -598,11 +598,11 @@ For an audio output:
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=0x0funky%2Fagent-sprite-forge&type=date&legend=top-left">
+<a href="https://www.star-history.com/?repos=is0BIG%2FAgent-2D-Assets&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=is0BIG/Agent-2D-Assets&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=is0BIG/Agent-2D-Assets&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=is0BIG/Agent-2D-Assets&type=date&legend=top-left" />
  </picture>
 </a>
 

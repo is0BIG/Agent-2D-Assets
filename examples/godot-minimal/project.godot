@@ -5,6 +5,6 @@ config_version=5
 
 [application]
 
-config/name="Agent Sprite Forge Minimal Demo"
+config/name="Agent-2D-Assets Minimal Demo"
 run/main_scene="res://scenes/Main.tscn"
 config/features=PackedStringArray("4.0")
