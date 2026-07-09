@@ -1,6 +1,6 @@
 # Agent-2D-Assets
 
-言語：[English](./README.md) | [繁體中文](./README.zh-TW.md) | [简体中文](./README.zh-CN.md) | [日本語](./README.ja.md) | [한국어](./README.ko.md)
+言語：[English](./README.en.md) | [繁體中文](./README.zh-TW.md) | [简体中文](./README.md) | [日本語](./README.ja.md) | [한국어](./README.ko.md)
 
 <p align="center">
   <img src="./src/banner.png" alt="Agent-2D-Assets banner" width="900" />
