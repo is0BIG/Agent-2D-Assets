@@ -7,11 +7,11 @@ Languages: [English](./README.md) | [繁體中文](./README.zh-TW.md) | [简体�
 </p>
 
 <p align="center">
-  <strong>Codex skills for game-ready 2D sprites, layered maps, and engine-ready prototypes.</strong>
+  <strong>Codex skills for game-ready 2D sprites, layered maps, and engine-ready audio assets.</strong>
 </p>
 
 <p align="center">
-  Ask in natural language. Codex plans the asset pipeline, renders with built-in image generation, then local processors clean, split, validate, and export assets for Godot, Unity, or raw 2D game workflows.
+  Ask in natural language. Codex plans the asset pipeline, renders visuals with built-in image generation, then local processors clean, split, validate, synthesize audio, analyze metadata, and export assets for Godot, Unity, or raw 2D game workflows.
 </p>
 
 <p align="center">
@@ -19,6 +19,7 @@ Languages: [English](./README.md) | [繁體中文](./README.zh-TW.md) | [简体�
   <a href="#included-skills">Skills</a> ·
   <a href="#install">Install</a> ·
   <a href="#suggested-prompts">Prompts</a> ·
+  <a href="#audio-examples">Audio</a> |
   <a href="#star-history">Star History</a>
 </p>
 
@@ -587,6 +588,34 @@ For an audio output:
 - Single SFX: `sound.wav` and `sound.analysis.json`.
 - Audio pack: one WAV per sound, per-file analysis JSON, and `audio-pack.json`.
 - Processed source audio: cleaned WAV plus trim/fade/normalize metadata.
+
+## Audio Examples
+
+These sample packs were generated with `$generate2daudio` and can be imported into Godot as WAV assets.
+
+### Retro UI Pack
+
+Directory: [examples/audio/retro-ui-pack](./examples/audio/retro-ui-pack)
+
+- [click.wav](./examples/audio/retro-ui-pack/click.wav)
+- [confirm.wav](./examples/audio/retro-ui-pack/confirm.wav)
+- [cancel.wav](./examples/audio/retro-ui-pack/cancel.wav)
+- [error.wav](./examples/audio/retro-ui-pack/error.wav)
+- [audio-pack.json](./examples/audio/retro-ui-pack/audio-pack.json)
+- [analysis.json](./examples/audio/retro-ui-pack/analysis.json)
+
+### Fantasy Fireball Godot Pack
+
+Directory: [examples/audio/fantasy-fireball-godot](./examples/audio/fantasy-fireball-godot)
+
+- [spell-cast.wav](./examples/audio/fantasy-fireball-godot/spell-cast.wav)
+- [spell-loop.wav](./examples/audio/fantasy-fireball-godot/spell-loop.wav)
+- [fireball-loop-godot.wav](./examples/audio/fantasy-fireball-godot/fireball-loop-godot.wav)
+- [spell-hit.wav](./examples/audio/fantasy-fireball-godot/spell-hit.wav)
+- [audio-pack.json](./examples/audio/fantasy-fireball-godot/audio-pack.json)
+- [analysis.json](./examples/audio/fantasy-fireball-godot/analysis.json)
+
+For Godot, use `spell-cast.wav` and `spell-hit.wav` as one-shot sounds, and use `fireball-loop-godot.wav` as the looping fireball bed.
 
 ## Notes
 
