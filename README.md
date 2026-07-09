@@ -386,6 +386,7 @@ Use $generate2dsprite to create a 2D game similar to Pokemon. You only need to b
 | --- | --- | --- |
 | [`generate2dsprite`](./skills/generate2dsprite) | Sprites, animation sheets, props, spell bundles, FX, reference variants, optional layout guides for fixed-frame sheets | Raw sheet, cleaned transparent sheet, frames, GIFs, metadata |
 | [`generate2dmap`](./skills/generate2dmap) | Baked maps, layered raster maps, clean HD RPG maps, prop packs, collision/zones, Godot-editable scenes | Base map, dressed reference, prop pack, extracted props, preview, scene metadata |
+| [`generate2daudio`](./skills/generate2daudio) | UI sounds, combat SFX, spell bundles, pickup cues, ambience drafts, and engine-ready audio metadata | WAV files, analysis JSON, pack manifests |
 
 `$generate2dmap` only uses `$generate2dsprite` when the selected map pipeline needs reusable transparent props. Small environmental props can be batched into `2x2`, `3x3`, or `4x4` prop packs, then extracted into individual transparent props. Simple maps can stay as a single baked image.
 
@@ -411,12 +412,13 @@ The script is not the creative brain. The agent makes the visual and pipeline de
 - Collision and zone metadata for playable maps
 - Godot-ready editable maps with `TileMapLayer`, separate props, encounter grass, collision, exits, and debug player scenes
 - Prototype-scale Godot and Unity scenes when the user asks Codex to wire assets into an engine project
+- Game audio packs such as UI clicks, pickups, hits, spell casts, loops, impacts, and QA metadata
 
 ## Install
 
 ### Option 1: Windows PowerShell
 
-Clone the repo, install the local processor dependencies, then copy both skills into your Codex skills directory:
+Clone the repo, install the local processor dependencies, then copy the skills into your Codex skills directory:
 
 ```powershell
 git clone https://github.com/0x0funky/agent-sprite-forge.git
@@ -443,6 +445,7 @@ Start a new Codex session after installation so the skills are loaded cleanly.
 ## Documentation
 
 - [Troubleshooting](./docs/troubleshooting.md)
+- [Generate2DAudio 中文使用手册](./docs/generate2daudio-中文使用手册.md)
 - [中文使用手册](./docs/中文使用手册.md)
 - [Minimal Godot demo](./examples/godot-minimal)
 - [Minimal Unity demo](./examples/unity-minimal)
@@ -455,6 +458,8 @@ The local post-processor depends on:
 - `numpy`
 
 They are listed in [`requirements.txt`](./requirements.txt). Codex handles image generation itself, but these Python packages are still needed for magenta background removal, frame splitting, bounding-box extraction, alignment/rescaling, transparent GIF/PNG export, and prop-pack slicing.
+
+The audio skill uses Python's standard library for WAV synthesis, processing, and analysis, so it has no extra dependency for basic SFX output.
 
 ## Repository Layout
 
@@ -496,6 +501,18 @@ agent-sprite-forge/
         image_provider.py
         import_generated_image.py
         make_layout_guide.py
+    generate2daudio/
+      SKILL.md
+      agents/
+        openai.yaml
+      references/
+        audio-styles.md
+        game-audio-contract.md
+      scripts/
+        analyze_audio.py
+        audio_utils.py
+        process_audio.py
+        synthesize_sfx.py
 ```
 
 ## Suggested Prompts
@@ -532,6 +549,16 @@ Use $generate2dmap to create a top-down RPG forest shrine map. Use a layered ras
 Use $generate2dmap to create a Godot-editable RPG map with separated props, encounter grass Area2D zones, collision StaticBody2D blockers, exit zones, and a debug player scene.
 ```
 
+### Audio
+
+```text
+Use $generate2daudio to create a retro UI sound pack with click, confirm, cancel, and error WAV files plus engine-ready metadata.
+```
+
+```text
+Use $generate2daudio to create a fantasy fireball audio bundle with cast, loop, and impact sounds for Godot.
+```
+
 ## What You Get
 
 For a typical sprite sheet output:
@@ -554,6 +581,12 @@ For a map output, the result depends on the chosen pipeline:
 - Single baked map: complete map image, optional prompt file, and optional collision metadata.
 - Layered raster map: base map, dressed reference, prop folders or prop-pack extraction manifest, prop placement metadata, collision/zones metadata, and flattened layered preview.
 - Godot editable map: tileset/prop assets, scene files, layer metadata, collision/zones, exits, and debug player setup.
+
+For an audio output:
+
+- Single SFX: `sound.wav` and `sound.analysis.json`.
+- Audio pack: one WAV per sound, per-file analysis JSON, and `audio-pack.json`.
+- Processed source audio: cleaned WAV plus trim/fade/normalize metadata.
 
 ## Notes
 
