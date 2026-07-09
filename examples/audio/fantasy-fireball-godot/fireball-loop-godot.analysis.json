@@ -1,0 +1,26 @@
+{
+  "source": "outputs\\audio\\fantasy-fireball-godot\\fireball-loop-godot.wav",
+  "sample_rate": 44100,
+  "channels": 1,
+  "sample_count": 33075,
+  "duration_seconds": 0.75,
+  "peak": 0.891251,
+  "peak_dbfs": -1.0,
+  "rms": 0.425497,
+  "rms_dbfs": -7.422,
+  "clipping_samples": 0,
+  "near_silence": false,
+  "loop": true,
+  "input": ".\\outputs\\audio\\fantasy-fireball-godot\\spell-loop.wav",
+  "output": "outputs\\audio\\fantasy-fireball-godot\\fireball-loop-godot.wav",
+  "source_channels": 1,
+  "processing": {
+    "trim_silence": false,
+    "silence_threshold_db": -55.0,
+    "fade_in_ms": 5.0,
+    "fade_out_ms": 5.0,
+    "normalize_peak_db": -1.0,
+    "loop": "crossfade",
+    "crossfade_ms": 20.0
+  }
+}

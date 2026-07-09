@@ -1,0 +1,64 @@
+{
+  "files": [
+    {
+      "source": "outputs\\audio\\fantasy-fireball-godot\\fireball-loop-godot.wav",
+      "sample_rate": 44100,
+      "channels": 1,
+      "sample_count": 33075,
+      "duration_seconds": 0.75,
+      "peak": 0.891235,
+      "peak_dbfs": -1.0,
+      "rms": 0.42549,
+      "rms_dbfs": -7.422,
+      "clipping_samples": 0,
+      "near_silence": false,
+      "loop": false,
+      "file": "fireball-loop-godot.wav"
+    },
+    {
+      "source": "outputs\\audio\\fantasy-fireball-godot\\spell-cast.wav",
+      "sample_rate": 44100,
+      "channels": 1,
+      "sample_count": 19845,
+      "duration_seconds": 0.45,
+      "peak": 0.891235,
+      "peak_dbfs": -1.0,
+      "rms": 0.322327,
+      "rms_dbfs": -9.834,
+      "clipping_samples": 0,
+      "near_silence": false,
+      "loop": false,
+      "file": "spell-cast.wav"
+    },
+    {
+      "source": "outputs\\audio\\fantasy-fireball-godot\\spell-hit.wav",
+      "sample_rate": 44100,
+      "channels": 1,
+      "sample_count": 22050,
+      "duration_seconds": 0.5,
+      "peak": 0.891235,
+      "peak_dbfs": -1.0,
+      "rms": 0.352929,
+      "rms_dbfs": -9.046,
+      "clipping_samples": 0,
+      "near_silence": false,
+      "loop": false,
+      "file": "spell-hit.wav"
+    },
+    {
+      "source": "outputs\\audio\\fantasy-fireball-godot\\spell-loop.wav",
+      "sample_rate": 44100,
+      "channels": 1,
+      "sample_count": 33075,
+      "duration_seconds": 0.75,
+      "peak": 0.891235,
+      "peak_dbfs": -1.0,
+      "rms": 0.425387,
+      "rms_dbfs": -7.424,
+      "clipping_samples": 0,
+      "near_silence": false,
+      "loop": false,
+      "file": "spell-loop.wav"
+    }
+  ]
+}

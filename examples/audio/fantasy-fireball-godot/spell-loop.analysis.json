@@ -1,0 +1,18 @@
+{
+  "source": "outputs\\audio\\fantasy-fireball-godot\\spell-loop.wav",
+  "sample_rate": 44100,
+  "channels": 1,
+  "sample_count": 33075,
+  "duration_seconds": 0.75,
+  "peak": 0.891251,
+  "peak_dbfs": -1.0,
+  "rms": 0.425401,
+  "rms_dbfs": -7.424,
+  "clipping_samples": 0,
+  "near_silence": false,
+  "loop": true,
+  "id": "spell-loop",
+  "sound": "spell-loop",
+  "style": "fantasy",
+  "file": "spell-loop.wav"
+}

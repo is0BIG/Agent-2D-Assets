@@ -1,0 +1,18 @@
+{
+  "source": "outputs\\audio\\retro-ui-pack\\error.wav",
+  "sample_rate": 44100,
+  "channels": 1,
+  "sample_count": 10584,
+  "duration_seconds": 0.24,
+  "peak": 0.891251,
+  "peak_dbfs": -1.0,
+  "rms": 0.755341,
+  "rms_dbfs": -2.437,
+  "clipping_samples": 0,
+  "near_silence": false,
+  "loop": false,
+  "id": "error",
+  "sound": "error",
+  "style": "retro",
+  "file": "error.wav"
+}

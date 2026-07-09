@@ -1,0 +1,18 @@
+{
+  "source": "outputs\\audio\\retro-ui-pack\\click.wav",
+  "sample_rate": 44100,
+  "channels": 1,
+  "sample_count": 3528,
+  "duration_seconds": 0.08,
+  "peak": 0.891251,
+  "peak_dbfs": -1.0,
+  "rms": 0.466362,
+  "rms_dbfs": -6.626,
+  "clipping_samples": 0,
+  "near_silence": false,
+  "loop": false,
+  "id": "click",
+  "sound": "click",
+  "style": "retro",
+  "file": "click.wav"
+}

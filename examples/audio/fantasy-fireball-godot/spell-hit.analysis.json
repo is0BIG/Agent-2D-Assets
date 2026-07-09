@@ -1,0 +1,18 @@
+{
+  "source": "outputs\\audio\\fantasy-fireball-godot\\spell-hit.wav",
+  "sample_rate": 44100,
+  "channels": 1,
+  "sample_count": 22050,
+  "duration_seconds": 0.5,
+  "peak": 0.891251,
+  "peak_dbfs": -1.0,
+  "rms": 0.35294,
+  "rms_dbfs": -9.046,
+  "clipping_samples": 0,
+  "near_silence": false,
+  "loop": false,
+  "id": "spell-hit",
+  "sound": "spell-hit",
+  "style": "fantasy",
+  "file": "spell-hit.wav"
+}

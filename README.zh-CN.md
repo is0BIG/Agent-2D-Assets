@@ -1,123 +1,135 @@
 # Agent Sprite Forge
 
-语言：[English](./README.md) | [繁體中文](./README.zh-TW.md) | [简体中文](./README.zh-CN.md) | [日本語](./README.ja.md) | [한국어](./README.ko.md)
+语言：[English](./README.md) | [繁体中文](./README.zh-TW.md) | [简体中文](./README.zh-CN.md) | [日本語](./README.ja.md) | [한국어](./README.ko.md)
 
 <p align="center">
   <img src="./src/banner.png" alt="Agent Sprite Forge banner" width="900" />
 </p>
 
 <p align="center">
-  <strong>面向 Codex 的 2D 游戏资产技能：生成可用的角色精灵、分层地图，以及能交给游戏引擎继续编辑的原型素材。</strong>
+  <strong>面向 Codex 的 2D 游戏资产工作流：生成可用于 Godot、Unity 或原生 2D 项目的角色、地图和音频素材。</strong>
 </p>
 
 <p align="center">
-  用自然语言描述需求，Codex 负责规划资产流程，用内置图像生成产出原始视觉，再用本地处理器去背、切格、对齐、验证，并导出给 Godot、Unity 或普通 2D 游戏项目使用。
+  用自然语言描述需求。Codex 负责资产规划与生成，本地脚本负责去背、切帧、对齐、质量检查、音频处理和导出。
 </p>
 
 <p align="center">
-  <a href="#showcase">Showcase</a> |
-  <a href="#included-skills">Skills</a> |
-  <a href="#install">Install</a> |
-  <a href="#suggested-prompts">Prompts</a> |
-  <a href="#star-history">Star History</a>
+  <a href="#项目特点">项目特点</a> |
+  <a href="#包含的-skills">Skills</a> |
+  <a href="#godot-可用性">Godot</a> |
+  <a href="#安装">安装</a> |
+  <a href="#示例提示词">提示词</a> |
+  <a href="#示例音频素材">音频素材</a>
 </p>
 
-## 有什么不同
+## 项目特点
 
-Agent Sprite Forge 不是一组 prompt 模板。它是一套 Codex-first 的 2D 游戏资产工作流：agent 先判断需要什么资产、图像生成负责创作原始视觉，本地脚本只做可重复的清理、切割、对齐、验证和导出。
+Agent Sprite Forge 不是单纯的提示词合集，而是一套 Codex-first 的 2D 游戏资产流水线：
 
-<table>
-  <tr>
-    <td width="25%"><strong>精灵表</strong><br />角色、怪物、NPC、道具、攻击、法术、投射物、命中特效、idle、walk，以及参考图驱动的变体。</td>
-    <td width="25%"><strong>分层地图</strong><br />ground-only base、dressed reference、prop pack、透明 props、y-sort 摆放、碰撞、区域和预览图。</td>
-    <td width="25%"><strong>引擎交付</strong><br />Godot 场景、可编辑 TileMapLayer、分离式 props、遇怪草丛、碰撞体、出口和 debug player。</td>
-    <td width="25%"><strong>本地清理</strong><br />洋红去背、frame extraction、alignment、透明 PNG/GIF 导出、prop pack 切割和 QA metadata。</td>
-  </tr>
-</table>
+1. Codex 根据需求判断资产类型、风格、视角、输出格式和引擎目标。
+2. 视觉资产由图像生成或用户提供的素材产生。
+3. 本地 Python 脚本完成可重复的清理、切帧、对齐、分析和导出。
+4. 输出素材带有元数据，方便继续接入 Godot、Unity、Web 或其他 2D 游戏项目。
+
+当前已经包含三类核心资产：
+
+| 类型 | Skill | 适合生成 |
+| --- | --- | --- |
+| 角色与特效 | [`generate2dsprite`](./skills/generate2dsprite) | 角色、怪物、NPC、道具、法术、投射物、命中特效、动画帧 |
+| 地图与场景 | [`generate2dmap`](./skills/generate2dmap) | RPG 地图、分层场景、TileMap、碰撞、区域、出口、Godot 场景草案 |
+| 音频与音效 | [`generate2daudio`](./skills/generate2daudio) | UI 音效、战斗音效、法术音效包、循环音、WAV 分析和 manifest |
+
+## Godot 可用性
+
+这三个 skill 生成的内容都可以用于 Godot，但接入方式略有不同。
+
+| Skill | Godot 用法 | 输出内容 |
+| --- | --- | --- |
+| `$generate2dsprite` | 透明 PNG、sprite sheet、frame PNG 可导入 `Sprite2D`、`AnimatedSprite2D`、`SpriteFrames` 或 `AnimationPlayer` | `sheet-transparent.png`、frame PNG、GIF 预览、`pipeline-meta.json` |
+| `$generate2dmap` | 可用于 `TileMapLayer`、`Sprite2D` props、`Area2D` 区域、`StaticBody2D` 碰撞和场景 metadata | base map、prop pack、placements、collision、zones、preview、Godot scene 草案 |
+| `$generate2daudio` | WAV 可直接导入 Godot 作为 `AudioStreamWAV`，用于 `AudioStreamPlayer` 或 `AudioStreamPlayer2D` | WAV、单文件分析 JSON、`audio-pack.json`、目录分析报告 |
+
+建议的 Godot 工作流：
+
+```text
+$generate2dsprite -> 角色 / 敌人 / FX
+$generate2dmap    -> 地图 / 碰撞 / 出生点 / 出口
+$generate2daudio  -> UI / 战斗 / 法术 / 环境音
+Godot             -> 组装成场景、节点、脚本和可运行 demo
+```
 
 ## Showcase
 
-### Engine-Ready Prototypes
+### Godot 可编辑地图
 
-这些案例使用 Codex 和 `agent-sprite-forge` 工作流组装，重点是完整闭环：生成资产、结构化场景数据，以及可玩的 prototype wiring。
+`$generate2dmap` 可以输出面向 Godot 的可编辑地图结构，而不只是单张扁平图片。
 
-<table>
-  <tr>
-    <td align="center" width="50%">
-      <img src="./src/summon-survivors-game-preview1.png" alt="Summon Survivors Unity WebGL gameplay" width="420" />
-      <br />
-      <strong>Summon Survivors - Unity WebGL</strong>
-      <br />
-      生成地图、主角 sheet、召唤物、进化、敌人、Boss、拾取物、HUD、FX、升级选项和 WebGL 部署。
-      <br />
-      <a href="https://summon-survivors.vercel.app/">Play build</a> | <a href="https://drive.google.com/file/d/1TL7qRX95przTToZILVQ1EFwEXm3flB6t/view?usp=sharing">Build conversation</a>
-    </td>
-    <td align="center" width="50%">
-      <img src="./src/kingdomrush-forest-pass.png" alt="Forest Pass Defense Godot tower-defense map" width="420" />
-      <br />
-      <strong>Forest Pass Defense - Godot Tower Defense</strong>
-      <br />
-      Godot 4 塔防原型，包含地图、分离式 props、塔位、塔、敌人 sheet、Boss、飞行敌、波次、HUD、建造 / 升级 / 出售流程和投射物规则。
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="50%">
-      <img src="./src/godot-editor.png" alt="Generate2DMap Godot editor scene" width="420" />
-      <br />
-      <strong>Editable RPG Map - Godot TileMap</strong>
-      <br />
-      图像生成 tileset 和 prop sheet，再接进可编辑 <code>TileMapLayer</code>、<code>Sprite2D</code> props、遇怪草丛 <code>Area2D</code>、<code>StaticBody2D</code> 碰撞、出口、metadata 和 debug player/camera。
-    </td>
-    <td align="center" width="50%">
-      <img src="./src/neon-breach.png" alt="Neon Breach cyberpunk side-scroller" width="420" />
-      <br />
-      <strong>Neon Breach - Cyberpunk Side-Scroller</strong>
-      <br />
-      使用生成的角色、攻击、地图和 gameplay assets 组装出的可玩横向卷轴 prototype。
-    </td>
-  </tr>
-  <tr>
-    <td align="center" width="50%">
-      <img src="./src/pokemonlike2.png" alt="Sengoku Era JavaScript RPG starter selection" width="420" />
-      <br />
-      <strong>Sengoku Era - JavaScript monster-taming RPG</strong>
-      <br />
-      浏览器 RPG prototype，包含生成角色、初始怪物选择、地图流程和战斗 UI。
-      <br />
-      <a href="https://sengoku-era.vercel.app/">Play build</a>
-    </td>
-    <td align="center" width="50%">
-      <img src="./src/pokemonlike.png" alt="Sengoku Era JavaScript RPG battle scene" width="420" />
-      <br />
-      <strong>Starter selection and battle loop</strong>
-      <br />
-      用 skill workflow 生成 sprite、monster、battle 和 map assets 后完成的小型 JavaScript 游戏展示。
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <img src="./src/godot-editor.png" alt="Generate2DMap Godot editor scene" width="860" />
+  <br />
+  <strong>Godot editor scene：TileMapLayer、独立 props、区域、碰撞、出口和 debug player</strong>
+</p>
+
+Godot 地图输出可以包含：
+
+- 可编辑 `TileMapLayer`
+- 独立 `Sprite2D` props
+- `Area2D` 触发区、遇敌草丛和出口
+- `StaticBody2D` 碰撞阻挡
+- 玩家出生点、相机、debug player
+- 结构化 placement / collision / zones metadata
 
 ### Sprite Sheets And FX
 
-当你需要动画单位、玩家角色、怪物、props、spell bundles、projectile/impact FX，或参考图驱动的变体时，使用 `$generate2dsprite`。
+`$generate2dsprite` 适合生成动画角色、怪物、法术、投射物和命中特效。
 
 <table>
   <tr>
-    <td align="center" width="25%"><img src="./src/goku-kame.gif" alt="Goku Kamehameha sprite animation" width="170" /><br /><strong>Text to sprite</strong><br />从自然语言生成攻击动画。</td>
-    <td align="center" width="25%"><img src="./src/naruto-rasengan.gif" alt="Naruto Rasengan sprite animation" width="170" /><br /><strong>Character action</strong><br />紧凑的 2D 动作 sheet 和透明导出。</td>
-    <td align="center" width="25%"><img src="./src/cast.gif" alt="Fire mage cast animation" width="150" /><br /><strong>Spell cast</strong><br />适合 bundle 的施法动画。</td>
-    <td align="center" width="25%"><img src="./src/projectile.gif" alt="Fire mage projectile animation" width="150" /><br /><strong>Projectile</strong><br />匹配的 projectile / impact workflow。</td>
+    <td align="center" width="25%">
+      <img src="./src/goku-kame.gif" alt="Goku Kamehameha sprite animation" width="170" />
+      <br />
+      <strong>Attack animation</strong>
+    </td>
+    <td align="center" width="25%">
+      <img src="./src/naruto-rasengan.gif" alt="Naruto Rasengan sprite animation" width="170" />
+      <br />
+      <strong>Character action</strong>
+    </td>
+    <td align="center" width="25%">
+      <img src="./src/cast.gif" alt="Fire mage cast animation" width="150" />
+      <br />
+      <strong>Spell cast</strong>
+    </td>
+    <td align="center" width="25%">
+      <img src="./src/projectile.gif" alt="Fire mage projectile animation" width="150" />
+      <br />
+      <strong>Projectile</strong>
+    </td>
   </tr>
 </table>
 
-### Layered RPG Map Pipeline
+### 分层地图流程
 
-当你需要地图而不是单独 sprite 时，使用 `$generate2dmap`。可读性较高的 layered raster map 目前推荐 clean hand-painted HD game-map style：先生成 ground-only base，再生成 dressed reference，接着生成 prop pack，最后做透明 prop extraction 和 layered preview composition。
+`$generate2dmap` 适合做 clean HD RPG map、分层场景、prop pack 和碰撞数据。
 
 <table>
   <tr>
-    <td align="center" width="33%"><img src="./src/cyber-canal-base.png" alt="Ground-only cyberpunk canal RPG base map" width="300" /><br /><strong>Ground-only base</strong></td>
-    <td align="center" width="33%"><img src="./src/cyber-canal-dressed-reference.png" alt="Dressed cyberpunk canal reference map" width="300" /><br /><strong>Dressed reference</strong></td>
-    <td align="center" width="33%"><img src="./src/cyber-canal-prop-pack.png" alt="Generated 3x3 cyberpunk canal prop pack" width="300" /><br /><strong>3x3 prop pack</strong></td>
+    <td align="center" width="33%">
+      <img src="./src/cyber-canal-base.png" alt="Ground-only cyberpunk canal RPG base map" width="300" />
+      <br />
+      <strong>Ground-only base</strong>
+    </td>
+    <td align="center" width="33%">
+      <img src="./src/cyber-canal-dressed-reference.png" alt="Dressed cyberpunk canal reference map" width="300" />
+      <br />
+      <strong>Dressed reference</strong>
+    </td>
+    <td align="center" width="33%">
+      <img src="./src/cyber-canal-prop-pack.png" alt="Generated 3x3 cyberpunk canal prop pack" width="300" />
+      <br />
+      <strong>3x3 prop pack</strong>
+    </td>
   </tr>
 </table>
 
@@ -127,46 +139,85 @@ Agent Sprite Forge 不是一组 prompt 模板。它是一套 Codex-first 的 2D 
   <strong>Flattened layered RPG map preview</strong>
 </p>
 
-```text
-layered_raster + y_sorted_props + precise_shapes + trigger_zones + raw_canvas
-```
+## 包含的 Skills
 
-### Godot Editable TileMap Export
+### `$generate2dsprite`
 
-`$generate2dmap` 也可以输出可编辑 Godot map project，而不是只有一张 flattened image。这个 showcase 使用图像生成的 tileset 和 3x3 prop sheet，再接入 Godot 4.5 scene。
+用于生成和处理独立 2D sprite 资产。
 
-<p align="center">
-  <img src="./src/godot-editor.png" alt="Generate2DMap Godot editor scene with editable TileMapLayer and nodes" width="860" />
-  <br />
-  <strong>Godot editor scene: editable layers, props, zones, collision, exits, and debug player</strong>
-</p>
+常见输出：
 
-Godot 输出可以包含可编辑 `TileMapLayer` nodes、独立 `Sprite2D` props、遇怪草丛 `Area2D` zones、`StaticBody2D` collision blockers、exit `Area2D` zones，以及 debug player/camera。
+- `raw-sheet.png`
+- `raw-sheet-clean.png`
+- `sheet-transparent.png`
+- frame PNGs
+- `animation.gif`
+- 可选 APNG / WebP 预览
+- `prompt-used.txt`
+- `pipeline-meta.json`
+- 可选 `qc-report.html`
 
-```text
-image_gen tileset + prop_pack_3x3 + layered_tilemap + separate_props + trigger_zones + Godot_TileMap
-```
+### `$generate2dmap`
 
-## Included Skills
+用于地图、场景和关卡资产。
 
-| Skill | 用途 | 输出 |
-| --- | --- | --- |
-| [`generate2dsprite`](./skills/generate2dsprite) | Sprites、animation sheets、props、spell bundles、FX、参考图变体、固定 frame sheet 的 layout guide | raw sheet、cleaned transparent sheet、frames、GIFs、metadata |
-| [`generate2dmap`](./skills/generate2dmap) | baked maps、layered raster maps、clean HD RPG maps、prop packs、collision/zones、Godot-editable scenes、side-scroll/parallax scenes | base map、dressed/stage reference、prop pack、extracted props、preview、scene metadata |
+常见输出：
 
-`$generate2dmap` 只有在地图流程需要可复用透明 props 时，才会搭配 `$generate2dsprite`。小型环境 props 可以批成 `2x2`、`3x3` 或 `4x4` prop packs，再切成独立透明 props。平台、地板、桥、墙、门和长条 hazard 这类碰撞关键物件，通常应该单独生成或用 tile/object layer 表达。
+- `base.png`
+- `dressed-reference.png`
+- `prop-pack.png`
+- `props/`
+- `placements.json`
+- `collision.json`
+- `zones.json`
+- `layered-preview.png`
+- Godot / Tiled / LDtk / Unity 等目标格式的 metadata 或场景草案
 
-## How It Works
+### `$generate2daudio`
 
-1. 用户请 Codex 生成 sprite、prop pack、map 或 engine-ready prototype。
-2. Agent 判断 asset type、action、bundle shape、sheet layout、frame count、style 和 alignment strategy。
-3. 内置图像生成产出 raw visual asset。
-4. 本地脚本做 deterministic post-processing：chroma-key cleanup、despill、frame extraction、alignment、prop-pack slicing、GIF/PNG export 和 validation metadata。
-5. 对地图和 prototype，Codex 也可以组装 placement metadata、collision、trigger zones、Godot scenes 或 Unity project wiring。
+用于生成和处理 2D 游戏音频资产。
 
-脚本不是创意大脑。Agent 负责视觉和 pipeline 决策；Python 工具只做可重复的像素处理和导出。
+常见输出：
 
-## Install
+- 单个 WAV 音效
+- 每个音效对应的 `.analysis.json`
+- 音效包 `audio-pack.json`
+- 目录汇总 `analysis.json`
+- Godot 可直接导入的 `AudioStreamWAV` 源文件
+
+当前本地合成适合短音效，例如 UI、拾取、跳跃、命中、法术施放、法术循环和 impact。BGM、人声和复杂环境音建议后续接入专门音频模型或人工素材，再用本 skill 做清理、分析和交付。
+
+## 示例音频素材
+
+以下素材由 `$generate2daudio` 生成，已放入仓库示例目录，可作为 Godot 导入测试素材。
+
+### Retro UI Pack
+
+目录：[examples/audio/retro-ui-pack](./examples/audio/retro-ui-pack)
+
+- [click.wav](./examples/audio/retro-ui-pack/click.wav)
+- [confirm.wav](./examples/audio/retro-ui-pack/confirm.wav)
+- [cancel.wav](./examples/audio/retro-ui-pack/cancel.wav)
+- [error.wav](./examples/audio/retro-ui-pack/error.wav)
+- [audio-pack.json](./examples/audio/retro-ui-pack/audio-pack.json)
+- [analysis.json](./examples/audio/retro-ui-pack/analysis.json)
+
+质量检查：4 个 WAV 均为 `-1 dBFS` 左右峰值，`clipping_samples = 0`，没有近似静音问题。
+
+### Fantasy Fireball Godot Pack
+
+目录：[examples/audio/fantasy-fireball-godot](./examples/audio/fantasy-fireball-godot)
+
+- [spell-cast.wav](./examples/audio/fantasy-fireball-godot/spell-cast.wav)
+- [spell-loop.wav](./examples/audio/fantasy-fireball-godot/spell-loop.wav)
+- [fireball-loop-godot.wav](./examples/audio/fantasy-fireball-godot/fireball-loop-godot.wav)
+- [spell-hit.wav](./examples/audio/fantasy-fireball-godot/spell-hit.wav)
+- [audio-pack.json](./examples/audio/fantasy-fireball-godot/audio-pack.json)
+- [analysis.json](./examples/audio/fantasy-fireball-godot/analysis.json)
+
+Godot 建议：`spell-cast.wav` 和 `spell-hit.wav` 作为一次性音效触发，`fireball-loop-godot.wav` 用于循环播放。
+
+## 安装
 
 ### Windows PowerShell
 
@@ -190,70 +241,114 @@ mkdir -p ~/.codex/skills
 cp -R ./skills/* ~/.codex/skills/
 ```
 
-安装后请重开 Codex session，让 skills 被干净载入。
+安装后请开启新的 Codex 会话，让 skills 重新加载。
 
-## Suggested Prompts
+## 示例提示词
 
 ### Sprite
 
 ```text
-Use $generate2dsprite to create a 3x3 idle for an ultimate earth titan.
+Use $generate2dsprite to create a 2x2 idle animation for a cute blue slime, top-down RPG style, transparent output and GIF preview.
 ```
 
 ```text
-Use $generate2dsprite to create a side-view lightning knight attack animation.
+Use $generate2dsprite to create a side-view fire mage spell bundle with cast animation, projectile, and impact FX, pixel-inspired style, transparent PNG and GIF exports.
 ```
 
 ```text
-Use $generate2dsprite to create a wizard spell bundle with cast, projectile, and impact sprites.
+Use $generate2dsprite to create a 4-direction top-down walk sheet for a tiny armored knight, 4x4 grid, consistent scale, transparent output.
 ```
 
 ### Map
 
 ```text
-Use $generate2dmap to create a Godot-editable RPG map with separated props, encounter grass Area2D zones, collision StaticBody2D blockers, exit zones, and a debug player scene.
+Use $generate2dmap to create a Godot-editable RPG map with TileMapLayer, separated props, encounter grass Area2D zones, collision StaticBody2D blockers, exit zones, and a debug player scene.
 ```
 
 ```text
 Use $generate2dmap to create a playable side_scroll_mode platformer stage with parallax layers, stage-reference, separate platform_objects, collision metadata, camera bounds, and a stage-preview.
 ```
 
-## What You Get
+### Audio
 
-典型 sprite sheet 输出：
+```text
+Use $generate2daudio to create a retro UI sound pack with click, confirm, cancel, and error WAV files plus engine-ready metadata.
+```
 
-- `raw-sheet.png`
-- `raw-sheet-clean.png`
-- `sheet-transparent.png`
-- frame PNGs
-- `animation.gif`
-- `prompt-used.txt`
-- `pipeline-meta.json`
+```text
+Use $generate2daudio to create a fantasy fireball audio bundle with cast, loop, and impact sounds for Godot.
+```
 
-地图输出取决于 pipeline：
+## 本地脚本
 
-- Single baked map：完整地图图像、可选 prompt file、可选 collision metadata。
-- Layered raster map：base map、dressed reference、prop folders 或 prop-pack extraction manifest、prop placement metadata、collision/zones metadata、flattened layered preview。
-- Side-scroll map：parallax layers、stage reference、separate platform/object assets、objects/collision metadata、camera bounds、stage preview。
-- Godot editable map：tileset/prop assets、scene files、layer metadata、collision/zones、exits、debug player setup。
+### 处理 sprite sheet
 
-## Notes
+```powershell
+python .\skills\generate2dsprite\scripts\generate2dsprite.py process `
+  --input .\raw-sheet.png `
+  --target creature `
+  --mode idle `
+  --output-dir .\out\slime-idle `
+  --rows 2 `
+  --cols 2 `
+  --shared-scale `
+  --align bottom `
+  --edge-feather 80 `
+  --despill `
+  --reject-edge-touch
+```
 
-- 最好的结果来自明确指定视角、动作和动作节奏的 prompt。
-- 大型 creature 通常更适合 `3x3 idle`。
-- 小型 spell、projectile 和 impact 通常适合 `2x2` 或 `2x3`。
-- 主角攻击、射击、施法动作建议 body-only；大范围 slash、muzzle flash、projectile、impact 独立生成成 FX。
-- 商业项目请优先使用原创角色或你拥有权利的 IP。
+### 切分 prop pack
 
-## Star History
+```powershell
+python .\skills\generate2dmap\scripts\extract_prop_pack.py `
+  --input .\prop-pack.png `
+  --rows 3 `
+  --cols 3 `
+  --output-dir .\out\props `
+  --edge-feather 80 `
+  --despill `
+  --reject-edge-touch
+```
 
-<a href="https://www.star-history.com/?repos=0x0funky%2Fagent-sprite-forge&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=0x0funky/agent-sprite-forge&type=date&legend=top-left" />
- </picture>
-</a>
+### 生成音效包
+
+```powershell
+python .\skills\generate2daudio\scripts\synthesize_sfx.py `
+  --preset ui-pack `
+  --style retro `
+  --output-dir .\outputs\audio\retro-ui-pack
+```
+
+### 分析音频
+
+```powershell
+python .\skills\generate2daudio\scripts\analyze_audio.py `
+  --input .\outputs\audio\retro-ui-pack `
+  --output .\outputs\audio\retro-ui-pack\analysis.json
+```
+
+## 开发与验证
+
+运行测试：
+
+```powershell
+python -m unittest discover -s tests
+```
+
+当前测试覆盖：
+
+- sprite 去背、切帧、metadata、贴边检测
+- prop pack 切分和尺寸校验
+- audio WAV 生成、处理、分析和 manifest
+
+## 后续建议
+
+如果目标是做完整 Godot 游戏，下一步最值得新增的 skill 是：
+
+- `$assemblegodot2d`：把 sprite、map、audio 组装成 Godot `.tscn`、节点树和可运行 demo。
+- `$generate2dgameplay`：生成玩家移动、敌人 AI、攻击、拾取、血量、冷却和关卡触发脚本。
+- `$generate2dui`：生成 HUD、菜单、按钮、血条、技能栏、背包、对话框等 Godot UI。
 
 ## License
 

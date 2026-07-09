@@ -1,0 +1,18 @@
+{
+  "source": "outputs\\audio\\retro-ui-pack\\cancel.wav",
+  "sample_rate": 44100,
+  "channels": 1,
+  "sample_count": 7938,
+  "duration_seconds": 0.18,
+  "peak": 0.891251,
+  "peak_dbfs": -1.0,
+  "rms": 0.462836,
+  "rms_dbfs": -6.691,
+  "clipping_samples": 0,
+  "near_silence": false,
+  "loop": false,
+  "id": "cancel",
+  "sound": "cancel",
+  "style": "retro",
+  "file": "cancel.wav"
+}
