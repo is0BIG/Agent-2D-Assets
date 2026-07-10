@@ -89,3 +89,34 @@ python .\skills\generate2dmap\scripts\extract_prop_pack.py `
   --despill `
   --reject-edge-touch
 ```
+
+## Bonus. 1.1 视频动作转 sprite
+
+用途：角色 walk、run、attack、cast、jump、hurt、death 等连续身体动作。这个流程避免直接要求图像模型一次性画完整动作 sheet，而是先得到固定镜头动作视频或 PNG 帧，再选关键帧导出 Godot 可用 sprite。
+
+```text
+Use $generate2dsprite with the 1.1 video_motion workflow to convert a fixed-camera green-screen side-view sword slash animation into transparent frames, a sprite strip, a sprite sheet, GIF preview, checker preview, and Godot metadata. Preserve the full source canvas and do not recenter each frame.
+```
+
+推荐后处理：
+
+```powershell
+python .\skills\generate2dsprite\scripts\extract_video_frames.py `
+  --input .\source-motion.mp4 `
+  --output-dir .\out\sword-slash\source-frames `
+  --fps 12
+
+python .\skills\generate2dsprite\scripts\make_contact_sheet.py `
+  --frames-dir .\out\sword-slash\source-frames `
+  --output .\out\sword-slash\contact-sheet.png
+
+python .\skills\generate2dsprite\scripts\video_to_sprite.py `
+  --frames-dir .\out\sword-slash\source-frames `
+  --frame-indices .\out\sword-slash\frame_indices.json `
+  --output-dir .\out\sword-slash\processed `
+  --key-color "#00FF00" `
+  --cell-width 256 `
+  --cell-height 256 `
+  --sheet-cols 4 `
+  --despill
+```

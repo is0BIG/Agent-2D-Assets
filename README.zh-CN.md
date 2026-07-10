@@ -16,6 +16,7 @@
 
 <p align="center">
   <a href="#项目特点">项目特点</a> |
+  <a href="#版本路线">版本路线</a> |
   <a href="#包含的-skills">Skills</a> |
   <a href="#godot-可用性">Godot</a> |
   <a href="#安装">安装</a> |
@@ -44,6 +45,11 @@ Agent-2D-Assets 不是单纯的提示词合集，而是一套 Codex-first 的 2D
 | 角色与特效 | [`generate2dsprite`](./skills/generate2dsprite) | 角色、怪物、NPC、道具、法术、投射物、命中特效、动画帧 |
 | 地图与场景 | [`generate2dmap`](./skills/generate2dmap) | RPG 地图、分层场景、TileMap、碰撞、区域、出口、Godot 场景草案 |
 | 音频与音效 | [`generate2daudio`](./skills/generate2daudio) | UI 音效、战斗音效、法术音效包、循环音、WAV 分析和 manifest |
+
+## 版本路线
+
+- `1.0`：保留原有三技能工作流，包含 sprite sheet 去背切帧、map 分层交付、audio WAV 生成与分析、Godot / Unity 示例和多语言文档。
+- `1.1`：新增角色动作友好的 video-motion 工作流。对于 walk、run、attack、cast、jump、hurt、death 等身体动作，不再默认强迫图像模型一次性画完整 sprite sheet，而是用连续动作视频或固定画布帧序列，经过接触表选帧后导出透明 PNG、strip、sheet、GIF 和 Godot 元数据。
 
 ## Godot 可用性
 
@@ -149,6 +155,11 @@ Godot 地图输出可以包含：
 ### `$generate2dsprite`
 
 用于生成和处理独立 2D sprite 资产。
+
+1.1 起新增两条 sprite 路线：
+
+- `direct_sheet`：1.0 兼容路线，适合 idle、projectile、impact、prop pack、简单怪物和短循环。
+- `video_motion`：适合角色身体动作。先生成或导入固定镜头动作视频 / PNG 帧，再用接触表选关键帧，最后保留完整源画布导出透明 sprite strip / sheet。
 
 常见输出：
 
@@ -341,6 +352,37 @@ python .\skills\generate2dsprite\scripts\generate2dsprite.py process `
   --despill `
   --reject-edge-touch
 ```
+
+### 1.1 视频动作转 sprite
+
+先从视频抽帧并生成接触表：
+
+```powershell
+python .\skills\generate2dsprite\scripts\extract_video_frames.py `
+  --input .\source-motion.mp4 `
+  --output-dir .\out\motion\source-frames `
+  --fps 12
+
+python .\skills\generate2dsprite\scripts\make_contact_sheet.py `
+  --frames-dir .\out\motion\source-frames `
+  --output .\out\motion\contact-sheet.png
+```
+
+创建 `frame_indices.json` 后导出 Godot 可用素材：
+
+```powershell
+python .\skills\generate2dsprite\scripts\video_to_sprite.py `
+  --frames-dir .\out\motion\source-frames `
+  --frame-indices .\out\motion\frame_indices.json `
+  --output-dir .\out\motion\processed `
+  --key-color "#00FF00" `
+  --cell-width 256 `
+  --cell-height 256 `
+  --sheet-cols 4 `
+  --despill
+```
+
+输出包含 `frames/`、`sprite-strip.png`、`sprite-sheet.png`、`animation.gif`、`checker-preview.png`、`sprite-motion-manifest.json` 和 `godot-import.md`。
 
 ### 切分 prop pack
 

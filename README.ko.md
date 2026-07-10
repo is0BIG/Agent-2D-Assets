@@ -28,6 +28,11 @@ Agent-2D-Assets는 단순한 프롬프트 모음이 아니라 Codex-first 2D 게
 | 맵 / 씬 | [`generate2dmap`](./skills/generate2dmap) | RPG 맵, 레이어드 씬, TileMap, 충돌, 구역, 출구, Godot 씬 초안 |
 | 오디오 / SFX | [`generate2daudio`](./skills/generate2daudio) | UI 사운드, 전투 SFX, 마법 사운드 번들, 루프 사운드, WAV 분석, manifest |
 
+## Version Roadmap
+
+- `1.0`: 기존 3개 스킬 흐름을 유지합니다. sprite sheet 배경 제거와 프레임 분할, map 레이어 전달, audio WAV 생성/분석, Godot / Unity 예제가 포함됩니다.
+- `1.1`: video-motion 워크플로를 추가했습니다. walk, run, attack, cast, jump, hurt, death 같은 몸 동작은 고정 카메라 영상 또는 PNG 프레임에서 contact sheet로 키프레임을 고른 뒤 투명 프레임, strip, sheet, GIF, Godot metadata로 내보낼 수 있습니다.
+
 ## Godot 사용성
 
 | Skill | Godot에서의 사용 | 출력 |
@@ -142,6 +147,10 @@ cp -R ./skills/* ~/.codex/skills/
 
 ```text
 Use $generate2dsprite to create a 2x2 idle animation for a cute blue slime, top-down RPG style, transparent output and GIF preview.
+```
+
+```text
+Use $generate2dsprite with the 1.1 video_motion workflow to convert a fixed-camera green-screen sword slash video into transparent frames, a sprite strip, a sprite sheet, GIF preview, and Godot metadata.
 ```
 
 ```text

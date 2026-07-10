@@ -17,6 +17,8 @@ PROP_SCRIPT = ROOT / "skills" / "generate2dmap" / "scripts" / "extract_prop_pack
 IMPORT_SCRIPT = ROOT / "skills" / "generate2dsprite" / "scripts" / "import_generated_image.py"
 PROVIDER_SCRIPT = ROOT / "skills" / "generate2dsprite" / "scripts" / "image_provider.py"
 QC_SCRIPT = ROOT / "skills" / "generate2dsprite" / "scripts" / "generate_qc_report.py"
+VIDEO_TO_SPRITE_SCRIPT = ROOT / "skills" / "generate2dsprite" / "scripts" / "video_to_sprite.py"
+CONTACT_SHEET_SCRIPT = ROOT / "skills" / "generate2dsprite" / "scripts" / "make_contact_sheet.py"
 
 
 def save_sprite_grid(path: Path, size: tuple[int, int] = (128, 128)) -> None:
@@ -524,6 +526,123 @@ class ProcessorTests(unittest.TestCase):
                 expect_ok=False,
             )
             self.assertIn("not evenly divisible", result.stderr)
+
+    def test_video_motion_preserves_source_canvas_motion(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            frames = tmp_path / "frames"
+            out = tmp_path / "out"
+            frames.mkdir()
+            for index, left in enumerate((8, 28, 48), start=1):
+                img = Image.new("RGBA", (80, 40), (0, 255, 0, 255))
+                pixels = img.load()
+                for y in range(12, 28):
+                    for x in range(left, left + 10):
+                        pixels[x, y] = (40, 90, 220, 255)
+                img.save(frames / f"frame-{index:04d}.png")
+
+            self.run_cmd(
+                [
+                    str(VIDEO_TO_SPRITE_SCRIPT),
+                    "--frames-dir",
+                    str(frames),
+                    "--output-dir",
+                    str(out),
+                    "--cell-width",
+                    "80",
+                    "--cell-height",
+                    "40",
+                    "--sheet-cols",
+                    "3",
+                    "--tolerance",
+                    "20",
+                    "--edge-feather",
+                    "0",
+                ]
+            )
+
+            manifest = json.loads((out / "sprite-motion-manifest.json").read_text(encoding="utf-8"))
+            self.assertEqual(manifest["pipeline"], "video_motion")
+            self.assertTrue(manifest["preserve_source_canvas"])
+            self.assertEqual(manifest["frame_count"], 3)
+            bboxes = [item["alpha_bbox"] for item in manifest["frames"]]
+            self.assertEqual([bbox[0] for bbox in bboxes], [8, 28, 48])
+            self.assertTrue((out / "sprite-strip.png").exists())
+            self.assertTrue((out / "sprite-sheet.png").exists())
+            self.assertTrue((out / "animation.gif").exists())
+            self.assertTrue((out / "godot-import.md").exists())
+
+    def test_video_motion_accepts_selected_frame_indices(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            frames = tmp_path / "frames"
+            out = tmp_path / "out"
+            indices = tmp_path / "frame_indices.json"
+            frames.mkdir()
+            for index in range(5):
+                img = Image.new("RGBA", (16, 16), (0, 255, 0, 255))
+                pixels = img.load()
+                for y in range(4, 8):
+                    for x in range(3 + index, 7 + index):
+                        pixels[x, y] = (200, 40, 40, 255)
+                img.save(frames / f"frame-{index:04d}.png")
+            indices.write_text("[1, 3]", encoding="utf-8")
+
+            self.run_cmd(
+                [
+                    str(VIDEO_TO_SPRITE_SCRIPT),
+                    "--frames-dir",
+                    str(frames),
+                    "--output-dir",
+                    str(out),
+                    "--frame-indices",
+                    str(indices),
+                    "--cell-width",
+                    "16",
+                    "--cell-height",
+                    "16",
+                    "--tolerance",
+                    "20",
+                    "--edge-feather",
+                    "0",
+                ]
+            )
+
+            manifest = json.loads((out / "sprite-motion-manifest.json").read_text(encoding="utf-8"))
+            self.assertEqual(manifest["frame_indices"], [1, 3])
+            self.assertEqual(manifest["frame_count"], 2)
+            self.assertEqual(len(list((out / "frames").glob("*.png"))), 2)
+
+    def test_contact_sheet_exports_numbered_manifest(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            frames = tmp_path / "frames"
+            output = tmp_path / "contact-sheet.png"
+            frames.mkdir()
+            for index in range(3):
+                Image.new("RGBA", (16, 16), (index * 40, 20, 200, 255)).save(
+                    frames / f"frame-{index:04d}.png"
+                )
+
+            self.run_cmd(
+                [
+                    str(CONTACT_SHEET_SCRIPT),
+                    "--frames-dir",
+                    str(frames),
+                    "--output",
+                    str(output),
+                    "--cols",
+                    "2",
+                    "--thumb-width",
+                    "32",
+                    "--thumb-height",
+                    "32",
+                ]
+            )
+
+            self.assertTrue(output.exists())
+            manifest = json.loads(output.with_suffix(".json").read_text(encoding="utf-8"))
+            self.assertEqual(manifest["frame_count"], 3)
 
 
 if __name__ == "__main__":

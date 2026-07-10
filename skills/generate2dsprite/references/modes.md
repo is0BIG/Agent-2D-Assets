@@ -80,11 +80,29 @@ Use this file when the user's wording leaves room for multiple valid asset plans
   - use as raw generation only for one coherent long action sequence, prop packs, tileset-like atlases, or another single action family
   - use as a delivery atlas for mixed actions only after separate action sheets have been generated and QC'd
 
+## Motion Pipeline Presets
+
+- `direct_sheet` / `1.0`
+  - best for idles, projectiles, impacts, compact props, simple creatures, and prop packs
+  - uses a raw magenta image sheet from built-in image generation
+  - postprocess with `scripts/generate2dsprite.py process`
+- `video_motion` / `1.1`
+  - best for body actions that need temporal continuity: walk, run, attack, cast, hurt, death, jump, transformation, and recovery
+  - uses a first pose, generated video, imported video, or manually supplied full-canvas frame sequence
+  - review frames with `make_contact_sheet.py`, select key poses with `frame_indices.json`, then export with `video_to_sprite.py`
+- `manual_frames`
+  - use when the artist or another tool already produced fixed-camera PNG frames
+  - skip video extraction and run `video_to_sprite.py` directly on the frame folder
+
+Use `#00FF00` green screen for `video_motion` when possible. Use the existing `#FF00FF` magenta key for `direct_sheet` unless a specific source requires otherwise.
+
 ## Agent-First Mapping Hints
 
 - `"make a 4-direction main hero"` -> `player` + `player_sheet`
 - `"make a side-view hero with idle, run, shoot, and jump"` -> `player` + `hero_action_bundle`; generate one action sheet per action and keep projectile/impact assets separate
-- `"make a side-view hero melee attack"` -> `player` + `hero_action_bundle`; generate a body-only attack grid and separate slash/impact FX when the attack needs a wide arc
+- `"make a side-view hero melee attack"` -> `player` + `hero_action_bundle`; prefer `video_motion` for the body action, and keep slash/impact FX separate when the attack needs a wide arc
+- `"make a convincing walk/run cycle"` -> `video_motion`; do not force a direct image sheet if leg timing is the goal
+- `"turn these animation frames into a Godot sprite"` -> `manual_frames`; preserve full source canvas and export strip/sheet/GIF/manifest
 - `"make a healer npc"` -> `npc` + `single_asset`, `role=healer`
 - `"make a healer npc walk sheet"` -> `npc` + `walk`
 - `"make a boss idle"` -> `creature` + `idle`; prefer `3x3`
@@ -114,6 +132,8 @@ Keep these mappings working:
 - for body-only controllable hero actions, use `component_mode=largest`; for projectile, impact, aura, slash FX, or intentionally detached FX sheets, use `component_mode=all`
 - reject fixed-cell hero/player body actions when the body visibly shrinks compared with the accepted idle/run scale; split the wide FX or use a runtime with wider per-action cells and explicit origins
 - use a layout guide for prop packs, tileset-like atlases, fixed atlas rows, and non-directional 16-frame VFX-heavy action sequences; avoid making it the default for 4-direction walk sheets
+- for `video_motion`, keep full-canvas alignment and do not crop/recenter frames by bbox
+- for `video_motion`, select frames by semantic action beats rather than blind uniform sampling
 
 ## Output Shape
 
@@ -121,4 +141,5 @@ Keep these mappings working:
 - `player_sheet`: plus direction strips and four GIFs
 - `single_asset`: cleaned transparent PNG
 - `hero_action_bundle`: per-action folders, per-action GIFs, separate projectile/impact assets when needed, and optional assembled engine atlas
+- `video_motion`: selected transparent frames, `sprite-strip.png`, `sprite-sheet.png`, `animation.gif`, `checker-preview.png`, `sprite-motion-manifest.json`, and `godot-import.md`
 - bundles: one output folder per asset inside the bundle root

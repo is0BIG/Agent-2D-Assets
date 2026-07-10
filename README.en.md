@@ -53,6 +53,11 @@ Agent-2D-Assets is not just a folder of prompts. It is a Codex-first 2D game ass
   </tr>
 </table>
 
+## Version Roadmap
+
+- `1.0`: preserves the existing three-skill workflow for sprite sheet cleanup, layered map handoff, audio WAV generation/analysis, Godot / Unity examples, multilingual docs, and committed examples.
+- `1.1`: adds a video-motion sprite workflow for walk, run, attack, cast, jump, hurt, death, and other body actions. Instead of forcing an image model to draw a full action sheet directly, use a continuous motion video or fixed-canvas PNG frames, select semantic keyframes from a contact sheet, then export transparent frames, sprite strip, sprite sheet, GIF preview, and Godot metadata.
+
 ## Showcase
 
 ### Engine-Ready Prototypes
@@ -398,6 +403,11 @@ Use $generate2dsprite to create a 2D game similar to Pokemon. You only need to b
 
 When a visual reference is involved, both skills follow the same wrapper rule: make the image visible in the conversation first. Attached images and freshly generated images are already visible; local files should be opened with `view_image` before asking built-in image generation to preserve identity, style, map layout, or sprite lineage.
 
+`generate2dsprite` now has two routes:
+
+- `direct_sheet`: the 1.0-compatible path for idles, projectiles, impacts, prop packs, simple monsters, and short loops.
+- `video_motion`: the 1.1 path for character body actions. Extract full-canvas frames, create a contact sheet, select keyframes, and run `video_to_sprite.py` so motion stays aligned instead of being re-centered per frame.
+
 ## How It Works
 
 1. The user asks Codex for a sprite, prop pack, map, or engine-ready prototype.
@@ -507,6 +517,10 @@ Agent-2D-Assets/
         image_provider.py
         import_generated_image.py
         make_layout_guide.py
+        extract_video_frames.py
+        make_contact_sheet.py
+        select_frames.py
+        video_to_sprite.py
     generate2daudio/
       SKILL.md
       agents/
@@ -543,6 +557,10 @@ Use $generate2dsprite to create a 3x3 idle for an ultimate earth titan.
 
 ```text
 Use $generate2dsprite to create a side-view lightning knight attack animation.
+```
+
+```text
+Use $generate2dsprite with the 1.1 video_motion workflow to convert a fixed-camera green-screen sword slash video into transparent frames, a sprite strip, a sprite sheet, GIF preview, and Godot metadata.
 ```
 
 ```text

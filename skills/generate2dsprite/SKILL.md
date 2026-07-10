@@ -24,6 +24,9 @@ Infer these from the user request:
 - `margin`: `tight` | `normal` | `safe`
 - `art_style`: pixel_art | clean_hd | pixel_inspired | retro_pixel | map_style | project-native
 - `reference`: `none` | `attached_image` | `generated_image` | `local_file`
+- `motion_source`: `direct_sheet` | `video_motion` | `manual_frames`
+- `animation_pipeline`: `direct_sheet` | `image_to_video` | `selected_full_canvas_frames`
+- `key_color`: `#FF00FF` for direct sheet processing, or `#00FF00` for video/green-screen motion processing
 - `layout_guide`: `none` | `optional` | `recommended`
 - `prompt`: the user's theme or visual direction
 - `role`: only when the asset is clearly an NPC role
@@ -48,6 +51,13 @@ Read [references/modes.md](references/modes.md) when the request is ambiguous.
 - Layout guides are allowed only as deterministic geometry references for image generation. They may show slot count, spacing, centering, and safe padding, but must never define the creative art direction.
 - Treat script flags as execution primitives chosen by the agent, not user-facing hardcoded workflow.
 - If a generated sheet touches cell edges, drifts in scale, or breaks a projectile / impact loop, either reprocess with better primitive settings or regenerate the raw sheet.
+- Version 1.0 direct sheet workflow remains valid for idles, compact props, projectiles, impacts, prop packs, simple creatures, and low-risk loops.
+- Version 1.1 video-motion workflow is preferred for readable body motion such as walk, run, attack, cast, jump, hurt, death, transformation, and other actions where temporal continuity matters.
+- Do not force an image model to draw a full character body action sprite sheet when the request needs convincing motion. Generate or obtain a consistent first pose / video / frame sequence, make a contact sheet, select semantic keyframes, then convert full-canvas selected frames into the final sprite strip or sheet.
+- For video-motion processing, preserve the full source canvas for every frame. Do not crop each frame to its character bbox and recenter it, because that destroys real body motion and fabricates jitter.
+- Prefer a pure green `#00FF00` background for image-to-video or video-derived motion. Keep magenta `#FF00FF` for the direct-sheet workflow. The local scripts support both through `--key-color`.
+- Select animation frames by motion beats such as anticipation, wind-up, contact, follow-through, recovery, and loop return. Avoid blind uniform sampling when it misses the actual action.
+- Keep source video, extracted frames, contact sheet, selected frame index file, transparent frames, strip/sheet, GIF, checker preview, and manifest when using the 1.1 workflow.
 - Do not use raw single-row sheets such as `1x4`, `1x6`, `1x8`, or `1xN` for characters, players, controllable heroes, creatures, NPCs, enemies, summons, animated props, or any asset where a body/subject must stay centered. Single-row raw generation is too likely to drift horizontally and crop inconsistently.
 - For animated body assets, use a multi-row grid by default: 4 frames -> `2x2`, 6 frames -> `2x3`, 8 frames -> `2x4`, 9 frames -> `3x3`, 12 frames -> `3x4` or `4x3`, 16 frames -> `4x4`.
 - If a game engine needs a final single-row strip or mixed atlas, first generate and QC the action as a multi-row grid, then assemble the delivery strip/atlas deterministically.
@@ -161,7 +171,68 @@ Use layout guides deliberately:
 - optional for `3x3` large idle and high-value showcase loops when previous generations drift in scale or spacing
 - not the default for `4x4` four-direction walk sheets, because the guide can make directional poses too conservative; use it only after an unguided run fails layout or edge safety
 
-### 3. Generate the raw image
+### 3. Choose the motion pipeline
+
+Use one of two workflows:
+
+- `direct_sheet` (1.0-compatible): ask built-in `image_gen` for a coherent raw grid sheet on solid magenta, then process it with `generate2dsprite.py process`.
+- `video_motion` (1.1): create or import a continuous full-canvas motion clip or frame sequence, review a numbered contact sheet, select keyframes, then convert those selected frames into a fixed-canvas transparent strip/sheet.
+
+Choose `direct_sheet` for:
+
+- idle loops
+- projectile loops
+- impact / explosion FX
+- compact prop packs
+- static character or creature variants
+- simple low-risk animation where frame continuity is not the main value
+
+Choose `video_motion` for:
+
+- walk and run cycles
+- melee attacks and weapon actions
+- cast, charge, summon, transformation, death, hurt, and recovery actions
+- reference-guided character motion
+- any body animation where image-generated sheets show leg drift, scale drift, or broken timing
+
+For `video_motion`, keep the first pose or source character on a solid green background when practical. Ask the motion generator for fixed camera, full body visible, no crop, stable scale, and pure `#00FF00` background. Then process locally:
+
+```bash
+python scripts/extract_video_frames.py \
+  --input <source-video.mp4> \
+  --output-dir <run-dir>/source-frames \
+  --fps 12
+
+python scripts/make_contact_sheet.py \
+  --frames-dir <run-dir>/source-frames \
+  --output <run-dir>/contact-sheet.png
+```
+
+Create `frame_indices.json` with zero-based selected frame indices, then:
+
+```bash
+python scripts/video_to_sprite.py \
+  --frames-dir <run-dir>/source-frames \
+  --frame-indices <run-dir>/frame_indices.json \
+  --output-dir <run-dir>/processed \
+  --key-color "#00FF00" \
+  --cell-width 256 \
+  --cell-height 256 \
+  --sheet-cols 4 \
+  --despill
+```
+
+The 1.1 output includes:
+
+- `frames/frame-001.png` etc.
+- `sprite-strip.png`
+- `sprite-sheet.png`
+- `animation.gif`
+- `checker-preview.png`
+- `sprite-motion-manifest.json`
+- `godot-import.md`
+
+### 4. Generate the raw image
 
 Use built-in `image_gen`.
 
@@ -173,7 +244,7 @@ After generation:
 - copy or reference it from the working output folder
 - keep the original generated image in place
 
-### 4. Postprocess locally
+### 5. Postprocess locally
 
 Run `scripts/generate2dsprite.py process` on the raw image.
 
@@ -191,7 +262,7 @@ Use the processor to gather QC metadata, not to make aesthetic decisions for you
 
 For hero action bundles, process each action grid as its own sheet before any final atlas assembly. Use `component_mode=largest` for body-only hero grids. Use `component_mode=all` only for projectile, impact, aura, slash FX, or intentionally detached FX sheets, not for fixed-cell hero body attacks that need stable body scale.
 
-### 5. QC the result
+### 6. QC the result
 
 Check:
 
@@ -201,10 +272,11 @@ Check:
 - does the sheet still read as one coherent animation
 - for hero/player body actions, does the body height match the accepted idle/run scale within roughly 10-15%
 - for fixed-cell runtimes, did a wide weapon trail or FX arc shrink the body inside the cell
+- for 1.1 video-motion outputs, does `sprite-motion-manifest.json` show the expected frame count, stable source canvas, empty or acceptable `edge_touch_frames`, and readable key poses
 
 If not, rerun with different processor settings or regenerate the raw sheet.
 
-### 6. Return the right bundle
+### 7. Return the right bundle
 
 For a single sheet, expect:
 
