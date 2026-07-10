@@ -23,6 +23,10 @@
   <a href="#示例音频素材">音频素材</a>
 </p>
 
+## 致谢
+
+Agent-2D-Assets 向原项目 [0x0funky/agent-sprite-forge](https://github.com/0x0funky/agent-sprite-forge) 致敬。本项目最初的 Codex 2D sprite / map 工作流方向受到原项目启发；在此基础上，继续扩展了本地处理脚本、Godot / Unity 交付说明、`generate2daudio` 音频技能、多语言文档和示例素材。原项目的版权声明已保留在 [LICENSE](./LICENSE) 中。
+
 ## 项目特点
 
 Agent-2D-Assets 不是单纯的提示词合集，而是一套 Codex-first 的 2D 游戏资产流水线：

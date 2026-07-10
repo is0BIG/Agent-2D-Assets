@@ -14,6 +14,10 @@
   自然言語で依頼すると、Codex がアセット計画を立て、ローカルスクリプトが背景除去、フレーム分割、整列、品質チェック、音声処理、エクスポートを担当します。
 </p>
 
+## 謝辞
+
+Agent-2D-Assets は、元の [0x0funky/agent-sprite-forge](https://github.com/0x0funky/agent-sprite-forge) プロジェクトに敬意を表します。本プロジェクトの Codex 向け 2D sprite / map ワークフローの出発点は、そのリポジトリから着想を得ています。その方向性を引き継ぎつつ、ローカル処理スクリプト、Godot / Unity 連携ドキュメント、`generate2daudio` スキル、多言語ドキュメント、サンプル素材を拡張しています。元プロジェクトの著作権表示は [LICENSE](./LICENSE) に残しています。
+
 ## 特長
 
 Agent-2D-Assets は単なるプロンプト集ではありません。Codex-first の 2D ゲームアセット制作パイプラインです。

@@ -14,6 +14,10 @@
   用自然語言描述需求。Codex 負責資產規劃與生成，本地腳本負責去背、切幀、對齊、品質檢查、音訊處理與匯出。
 </p>
 
+## 致謝
+
+Agent-2D-Assets 向原專案 [0x0funky/agent-sprite-forge](https://github.com/0x0funky/agent-sprite-forge) 致敬。本專案最初的 Codex 2D sprite / map 工作流方向受到原專案啟發；在此基礎上，繼續擴展了本地處理腳本、Godot / Unity 交付說明、`generate2daudio` 音訊技能、多語言文件與示例素材。原專案的版權聲明已保留在 [LICENSE](./LICENSE) 中。
+
 ## 專案特點
 
 Agent-2D-Assets 不是單純的提示詞集合，而是一套 Codex-first 的 2D 遊戲資產流水線。

@@ -14,6 +14,10 @@
   자연어로 요청하면 Codex가 에셋 계획을 세우고, 로컬 스크립트가 배경 제거, 프레임 분할, 정렬, 품질 검사, 오디오 처리, 내보내기를 담당합니다.
 </p>
 
+## 감사의 말
+
+Agent-2D-Assets는 원래 프로젝트인 [0x0funky/agent-sprite-forge](https://github.com/0x0funky/agent-sprite-forge)에 경의를 표합니다. 이 프로젝트의 Codex 중심 2D sprite / map 워크플로 방향은 해당 저장소에서 영감을 받았습니다. Agent-2D-Assets는 그 방향을 바탕으로 로컬 처리 스크립트, Godot / Unity 전달 문서, `generate2daudio` 스킬, 다국어 문서, 예시 에셋을 확장했습니다. 원 프로젝트의 저작권 고지는 [LICENSE](./LICENSE)에 보존되어 있습니다.
+
 ## 특징
 
 Agent-2D-Assets는 단순한 프롬프트 모음이 아니라 Codex-first 2D 게임 에셋 제작 파이프라인입니다.
