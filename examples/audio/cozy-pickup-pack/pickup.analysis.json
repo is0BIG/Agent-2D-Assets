@@ -1,0 +1,18 @@
+{
+  "source": "examples\\audio\\cozy-pickup-pack\\pickup.wav",
+  "sample_rate": 44100,
+  "channels": 1,
+  "sample_count": 11025,
+  "duration_seconds": 0.25,
+  "peak": 0.891251,
+  "peak_dbfs": -1.0,
+  "rms": 0.327904,
+  "rms_dbfs": -9.685,
+  "clipping_samples": 0,
+  "near_silence": false,
+  "loop": false,
+  "id": "pickup",
+  "sound": "pickup",
+  "style": "cozy",
+  "file": "pickup.wav"
+}

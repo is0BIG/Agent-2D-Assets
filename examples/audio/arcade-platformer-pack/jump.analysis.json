@@ -1,0 +1,18 @@
+{
+  "source": "examples\\audio\\arcade-platformer-pack\\jump.wav",
+  "sample_rate": 44100,
+  "channels": 1,
+  "sample_count": 9702,
+  "duration_seconds": 0.22,
+  "peak": 0.891251,
+  "peak_dbfs": -1.0,
+  "rms": 0.466514,
+  "rms_dbfs": -6.623,
+  "clipping_samples": 0,
+  "near_silence": false,
+  "loop": false,
+  "id": "jump",
+  "sound": "jump",
+  "style": "arcade",
+  "file": "jump.wav"
+}

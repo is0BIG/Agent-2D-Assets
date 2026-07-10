@@ -102,6 +102,15 @@ Godot             -> 組裝節點、場景、腳本與可執行 demo
 
 Godot 建議：`spell-cast.wav` 與 `spell-hit.wav` 作為一次性音效，`fireball-loop-godot.wav` 用於循環播放。
 
+## 更多示例
+
+每個 skill 都整理了 5 個可複製示例，包含用途、提示詞、推薦輸出與復現命令：
+
+- [`$generate2dsprite` 5 個示例](./examples/prompts/generate2dsprite.md)
+- [`$generate2dmap` 5 個示例](./examples/prompts/generate2dmap.md)
+- [`$generate2daudio` 5 個示例](./examples/prompts/generate2daudio.md)
+- [示例總覽](./examples/prompts/README.md)
+
 ## 安裝
 
 ### Windows PowerShell

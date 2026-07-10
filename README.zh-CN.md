@@ -20,6 +20,7 @@
   <a href="#godot-可用性">Godot</a> |
   <a href="#安装">安装</a> |
   <a href="#示例提示词">提示词</a> |
+  <a href="#更多示例">更多示例</a> |
   <a href="#示例音频素材">音频素材</a>
 </p>
 
@@ -221,6 +222,35 @@ Godot 地图输出可以包含：
 
 Godot 建议：`spell-cast.wav` 和 `spell-hit.wav` 作为一次性音效触发，`fireball-loop-godot.wav` 用于循环播放。
 
+### Arcade Platformer Pack
+
+目录：[examples/audio/arcade-platformer-pack](./examples/audio/arcade-platformer-pack)
+
+- jump
+- land
+- pickup
+- hit
+- powerup
+- `audio-pack.json`
+
+### Sci-Fi Combat Pack
+
+目录：[examples/audio/sci-fi-combat-pack](./examples/audio/sci-fi-combat-pack)
+
+- `laser.wav`
+- `explosion.wav`
+- `hit.wav`
+- `analysis.json`
+
+### Cozy Pickup Pack
+
+目录：[examples/audio/cozy-pickup-pack](./examples/audio/cozy-pickup-pack)
+
+- `pickup.wav`
+- `powerup.wav`
+- `confirm.wav`
+- `analysis.json`
+
 ## 安装
 
 ### Windows PowerShell
@@ -248,6 +278,13 @@ cp -R ./skills/* ~/.codex/skills/
 安装后请开启新的 Codex 会话，让 skills 重新加载。
 
 ## 示例提示词
+
+每个 skill 都整理了 5 个完整示例，包含用途、提示词、推荐输出和复现命令：
+
+- [`$generate2dsprite` 5 个示例](./examples/prompts/generate2dsprite.md)
+- [`$generate2dmap` 5 个示例](./examples/prompts/generate2dmap.md)
+- [`$generate2daudio` 5 个示例](./examples/prompts/generate2daudio.md)
+- [示例总览](./examples/prompts/README.md)
 
 ### Sprite
 

@@ -1,0 +1,49 @@
+{
+  "files": [
+    {
+      "source": "examples\\audio\\sci-fi-combat-pack\\explosion.wav",
+      "sample_rate": 44100,
+      "channels": 1,
+      "sample_count": 37485,
+      "duration_seconds": 0.85,
+      "peak": 0.891235,
+      "peak_dbfs": -1.0,
+      "rms": 0.297963,
+      "rms_dbfs": -10.517,
+      "clipping_samples": 0,
+      "near_silence": false,
+      "loop": false,
+      "file": "explosion.wav"
+    },
+    {
+      "source": "examples\\audio\\sci-fi-combat-pack\\hit.wav",
+      "sample_rate": 44100,
+      "channels": 1,
+      "sample_count": 7938,
+      "duration_seconds": 0.18,
+      "peak": 0.891235,
+      "peak_dbfs": -1.0,
+      "rms": 0.452299,
+      "rms_dbfs": -6.891,
+      "clipping_samples": 0,
+      "near_silence": false,
+      "loop": false,
+      "file": "hit.wav"
+    },
+    {
+      "source": "examples\\audio\\sci-fi-combat-pack\\laser.wav",
+      "sample_rate": 44100,
+      "channels": 1,
+      "sample_count": 12348,
+      "duration_seconds": 0.28,
+      "peak": 0.891235,
+      "peak_dbfs": -1.0,
+      "rms": 0.50288,
+      "rms_dbfs": -5.971,
+      "clipping_samples": 0,
+      "near_silence": false,
+      "loop": false,
+      "file": "laser.wav"
+    }
+  ]
+}

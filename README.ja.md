@@ -102,6 +102,15 @@ Directory: [examples/audio/fantasy-fireball-godot](./examples/audio/fantasy-fire
 
 Godot では `spell-cast.wav` と `spell-hit.wav` をワンショット音、`fireball-loop-godot.wav` をループ音として使うのがおすすめです。
 
+## More Examples
+
+Each skill has 5 copy-ready examples with purpose, prompt, expected outputs, and reproducible commands:
+
+- [5 `$generate2dsprite` examples](./examples/prompts/generate2dsprite.md)
+- [5 `$generate2dmap` examples](./examples/prompts/generate2dmap.md)
+- [5 `$generate2daudio` examples](./examples/prompts/generate2daudio.md)
+- [Example overview](./examples/prompts/README.md)
+
 ## Install
 
 ### Windows PowerShell

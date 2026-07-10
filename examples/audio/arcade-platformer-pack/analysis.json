@@ -1,0 +1,79 @@
+{
+  "files": [
+    {
+      "source": "examples\\audio\\arcade-platformer-pack\\hit.wav",
+      "sample_rate": 44100,
+      "channels": 1,
+      "sample_count": 7938,
+      "duration_seconds": 0.18,
+      "peak": 0.891235,
+      "peak_dbfs": -1.0,
+      "rms": 0.452299,
+      "rms_dbfs": -6.891,
+      "clipping_samples": 0,
+      "near_silence": false,
+      "loop": false,
+      "file": "hit.wav"
+    },
+    {
+      "source": "examples\\audio\\arcade-platformer-pack\\jump.wav",
+      "sample_rate": 44100,
+      "channels": 1,
+      "sample_count": 9702,
+      "duration_seconds": 0.22,
+      "peak": 0.891235,
+      "peak_dbfs": -1.0,
+      "rms": 0.4665,
+      "rms_dbfs": -6.623,
+      "clipping_samples": 0,
+      "near_silence": false,
+      "loop": false,
+      "file": "jump.wav"
+    },
+    {
+      "source": "examples\\audio\\arcade-platformer-pack\\land.wav",
+      "sample_rate": 44100,
+      "channels": 1,
+      "sample_count": 5292,
+      "duration_seconds": 0.12,
+      "peak": 0.891235,
+      "peak_dbfs": -1.0,
+      "rms": 0.561784,
+      "rms_dbfs": -5.009,
+      "clipping_samples": 0,
+      "near_silence": false,
+      "loop": false,
+      "file": "land.wav"
+    },
+    {
+      "source": "examples\\audio\\arcade-platformer-pack\\pickup.wav",
+      "sample_rate": 44100,
+      "channels": 1,
+      "sample_count": 11025,
+      "duration_seconds": 0.25,
+      "peak": 0.891235,
+      "peak_dbfs": -1.0,
+      "rms": 0.327894,
+      "rms_dbfs": -9.685,
+      "clipping_samples": 0,
+      "near_silence": false,
+      "loop": false,
+      "file": "pickup.wav"
+    },
+    {
+      "source": "examples\\audio\\arcade-platformer-pack\\powerup.wav",
+      "sample_rate": 44100,
+      "channels": 1,
+      "sample_count": 16758,
+      "duration_seconds": 0.38,
+      "peak": 0.891235,
+      "peak_dbfs": -1.0,
+      "rms": 0.339806,
+      "rms_dbfs": -9.375,
+      "clipping_samples": 0,
+      "near_silence": false,
+      "loop": false,
+      "file": "powerup.wav"
+    }
+  ]
+}

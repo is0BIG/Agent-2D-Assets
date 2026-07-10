@@ -1,0 +1,18 @@
+{
+  "source": "examples\\audio\\sci-fi-combat-pack\\laser.wav",
+  "sample_rate": 44100,
+  "channels": 1,
+  "sample_count": 12348,
+  "duration_seconds": 0.28,
+  "peak": 0.891251,
+  "peak_dbfs": -1.0,
+  "rms": 0.502896,
+  "rms_dbfs": -5.97,
+  "clipping_samples": 0,
+  "near_silence": false,
+  "loop": false,
+  "id": "laser",
+  "sound": "laser",
+  "style": "sci_fi",
+  "file": "laser.wav"
+}

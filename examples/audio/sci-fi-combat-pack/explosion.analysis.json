@@ -1,0 +1,18 @@
+{
+  "source": "examples\\audio\\sci-fi-combat-pack\\explosion.wav",
+  "sample_rate": 44100,
+  "channels": 1,
+  "sample_count": 37485,
+  "duration_seconds": 0.85,
+  "peak": 0.891251,
+  "peak_dbfs": -1.0,
+  "rms": 0.297972,
+  "rms_dbfs": -10.516,
+  "clipping_samples": 0,
+  "near_silence": false,
+  "loop": false,
+  "id": "explosion",
+  "sound": "explosion",
+  "style": "sci_fi",
+  "file": "explosion.wav"
+}

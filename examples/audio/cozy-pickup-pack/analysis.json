@@ -1,0 +1,49 @@
+{
+  "files": [
+    {
+      "source": "examples\\audio\\cozy-pickup-pack\\confirm.wav",
+      "sample_rate": 44100,
+      "channels": 1,
+      "sample_count": 9261,
+      "duration_seconds": 0.21,
+      "peak": 0.891235,
+      "peak_dbfs": -1.0,
+      "rms": 0.443532,
+      "rms_dbfs": -7.062,
+      "clipping_samples": 0,
+      "near_silence": false,
+      "loop": false,
+      "file": "confirm.wav"
+    },
+    {
+      "source": "examples\\audio\\cozy-pickup-pack\\pickup.wav",
+      "sample_rate": 44100,
+      "channels": 1,
+      "sample_count": 11025,
+      "duration_seconds": 0.25,
+      "peak": 0.891235,
+      "peak_dbfs": -1.0,
+      "rms": 0.327894,
+      "rms_dbfs": -9.685,
+      "clipping_samples": 0,
+      "near_silence": false,
+      "loop": false,
+      "file": "pickup.wav"
+    },
+    {
+      "source": "examples\\audio\\cozy-pickup-pack\\powerup.wav",
+      "sample_rate": 44100,
+      "channels": 1,
+      "sample_count": 16758,
+      "duration_seconds": 0.38,
+      "peak": 0.891235,
+      "peak_dbfs": -1.0,
+      "rms": 0.339806,
+      "rms_dbfs": -9.375,
+      "clipping_samples": 0,
+      "near_silence": false,
+      "loop": false,
+      "file": "powerup.wav"
+    }
+  ]
+}

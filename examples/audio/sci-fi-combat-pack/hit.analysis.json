@@ -1,0 +1,18 @@
+{
+  "source": "examples\\audio\\sci-fi-combat-pack\\hit.wav",
+  "sample_rate": 44100,
+  "channels": 1,
+  "sample_count": 7938,
+  "duration_seconds": 0.18,
+  "peak": 0.891251,
+  "peak_dbfs": -1.0,
+  "rms": 0.452313,
+  "rms_dbfs": -6.891,
+  "clipping_samples": 0,
+  "near_silence": false,
+  "loop": false,
+  "id": "hit",
+  "sound": "hit",
+  "style": "sci_fi",
+  "file": "hit.wav"
+}

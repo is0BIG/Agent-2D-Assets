@@ -1,0 +1,18 @@
+{
+  "source": "examples\\audio\\arcade-platformer-pack\\land.wav",
+  "sample_rate": 44100,
+  "channels": 1,
+  "sample_count": 5292,
+  "duration_seconds": 0.12,
+  "peak": 0.891251,
+  "peak_dbfs": -1.0,
+  "rms": 0.561801,
+  "rms_dbfs": -5.008,
+  "clipping_samples": 0,
+  "near_silence": false,
+  "loop": false,
+  "id": "land",
+  "sound": "land",
+  "style": "arcade",
+  "file": "land.wav"
+}
