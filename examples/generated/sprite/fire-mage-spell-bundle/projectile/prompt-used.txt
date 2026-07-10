@@ -1,0 +1,1 @@
+Fire mage bundle projectile: compact looping fireball VFX, transparent output, GIF preview, and metadata.

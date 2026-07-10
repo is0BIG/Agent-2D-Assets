@@ -1,0 +1,36 @@
+{
+  "slots": [
+    {
+      "id": "slot_01",
+      "position": [
+        332,
+        470
+      ],
+      "radius": 42
+    },
+    {
+      "id": "slot_02",
+      "position": [
+        640,
+        330
+      ],
+      "radius": 42
+    },
+    {
+      "id": "slot_03",
+      "position": [
+        978,
+        534
+      ],
+      "radius": 42
+    },
+    {
+      "id": "slot_04",
+      "position": [
+        1230,
+        406
+      ],
+      "radius": 42
+    }
+  ]
+}

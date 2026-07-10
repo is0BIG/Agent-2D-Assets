@@ -110,6 +110,9 @@ Each skill has 5 copy-ready examples with purpose, prompt, expected outputs, and
 - [5 `$generate2dmap` examples](./examples/prompts/generate2dmap.md)
 - [5 `$generate2daudio` examples](./examples/prompts/generate2daudio.md)
 - [Example overview](./examples/prompts/README.md)
+- [Generated output overview: PNG / GIF / WAV / JSON](./examples/generated/README.md)
+
+실제 예시 출력은 [examples/generated](./examples/generated)에, WAV 팩은 [examples/audio](./examples/audio)에 있습니다.
 
 ## Install
 

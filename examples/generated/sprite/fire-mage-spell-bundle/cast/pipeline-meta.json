@@ -1,0 +1,255 @@
+{
+  "target": "player",
+  "mode": "cast",
+  "prompt": "Use $generate2dsprite to create a side-view fire mage spell bundle with body-only cast animation, separate fire projectile, separate impact burst, pixel-inspired fantasy style, transparent PNG exports, GIF previews, and prompt-used metadata.\n",
+  "role": "",
+  "input": "examples/generated/_raw/sprite-fire-mage-cast-raw.png",
+  "key_color": "#ff00ff",
+  "threshold": 48,
+  "tolerance": 48,
+  "edge_threshold": 150,
+  "edge_feather": 2,
+  "despill": true,
+  "duration": 130,
+  "rows": 2,
+  "cols": 3,
+  "cell_size": 128,
+  "fit_scale": 0.85,
+  "trim_border": 4,
+  "edge_clean_depth": 3,
+  "align": "feet",
+  "shared_scale": true,
+  "apng": false,
+  "webp": false,
+  "component_mode": "largest",
+  "component_padding": 0,
+  "min_component_area": 1,
+  "edge_touch_margin": 0,
+  "frame_labels": [
+    "cast-1",
+    "cast-2",
+    "cast-3",
+    "cast-4",
+    "cast-5",
+    "cast-6"
+  ],
+  "frames": [
+    {
+      "grid": [
+        0,
+        0
+      ],
+      "source_box": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "component_mode": "largest",
+      "component_count": 2,
+      "selected_component_area": 47391,
+      "selected_component_bbox": [
+        203,
+        93,
+        401,
+        436
+      ],
+      "crop_bbox": [
+        203,
+        93,
+        401,
+        436
+      ],
+      "edge_touch": false,
+      "output_size": [
+        62,
+        108
+      ],
+      "paste_position": [
+        33,
+        11
+      ]
+    },
+    {
+      "grid": [
+        0,
+        1
+      ],
+      "source_box": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "component_mode": "largest",
+      "component_count": 10,
+      "selected_component_area": 47443,
+      "selected_component_bbox": [
+        118,
+        106,
+        390,
+        436
+      ],
+      "crop_bbox": [
+        118,
+        106,
+        390,
+        436
+      ],
+      "edge_touch": false,
+      "output_size": [
+        86,
+        104
+      ],
+      "paste_position": [
+        21,
+        15
+      ]
+    },
+    {
+      "grid": [
+        0,
+        2
+      ],
+      "source_box": [
+        1024,
+        0,
+        1536,
+        512
+      ],
+      "component_mode": "largest",
+      "component_count": 28,
+      "selected_component_area": 48452,
+      "selected_component_bbox": [
+        51,
+        118,
+        333,
+        436
+      ],
+      "crop_bbox": [
+        51,
+        118,
+        333,
+        436
+      ],
+      "edge_touch": false,
+      "output_size": [
+        89,
+        100
+      ],
+      "paste_position": [
+        19,
+        19
+      ]
+    },
+    {
+      "grid": [
+        1,
+        0
+      ],
+      "source_box": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "component_mode": "largest",
+      "component_count": 23,
+      "selected_component_area": 50380,
+      "selected_component_bbox": [
+        157,
+        41,
+        419,
+        383
+      ],
+      "crop_bbox": [
+        157,
+        41,
+        419,
+        383
+      ],
+      "edge_touch": false,
+      "output_size": [
+        83,
+        108
+      ],
+      "paste_position": [
+        22,
+        11
+      ]
+    },
+    {
+      "grid": [
+        1,
+        1
+      ],
+      "source_box": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "component_mode": "largest",
+      "component_count": 23,
+      "selected_component_area": 52425,
+      "selected_component_bbox": [
+        79,
+        45,
+        391,
+        383
+      ],
+      "crop_bbox": [
+        79,
+        45,
+        391,
+        383
+      ],
+      "edge_touch": false,
+      "output_size": [
+        98,
+        107
+      ],
+      "paste_position": [
+        15,
+        12
+      ]
+    },
+    {
+      "grid": [
+        1,
+        2
+      ],
+      "source_box": [
+        1024,
+        512,
+        1536,
+        1024
+      ],
+      "component_mode": "largest",
+      "component_count": 2,
+      "selected_component_area": 50025,
+      "selected_component_bbox": [
+        44,
+        42,
+        288,
+        383
+      ],
+      "crop_bbox": [
+        44,
+        42,
+        288,
+        383
+      ],
+      "edge_touch": false,
+      "output_size": [
+        77,
+        108
+      ],
+      "paste_position": [
+        25,
+        11
+      ]
+    }
+  ],
+  "edge_touch_frames": []
+}

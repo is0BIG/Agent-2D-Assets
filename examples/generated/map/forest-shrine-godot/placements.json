@@ -1,0 +1,38 @@
+{
+  "engine_target": "Godot",
+  "render_order": [
+    "base",
+    "props",
+    "actors",
+    "foreground"
+  ],
+  "props": [
+    {
+      "id": "stump_01",
+      "asset": "../../sprite/forest-prop-pack/props/stump.png",
+      "position": [
+        418,
+        512
+      ],
+      "y_sort": true
+    },
+    {
+      "id": "signpost_01",
+      "asset": "../../sprite/forest-prop-pack/props/signpost.png",
+      "position": [
+        882,
+        632
+      ],
+      "y_sort": true
+    },
+    {
+      "id": "lantern_01",
+      "asset": "../../sprite/forest-prop-pack/props/lantern.png",
+      "position": [
+        744,
+        424
+      ],
+      "y_sort": true
+    }
+  ]
+}

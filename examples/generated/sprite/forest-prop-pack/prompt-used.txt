@@ -1,0 +1,1 @@
+Use $generate2dsprite to create a 3x3 transparent forest prop pack for a clean HD top-down RPG map: small rock, stump, bush, mushroom cluster, signpost, crate, flower patch, lantern, and broken pot. Keep each prop centered in its cell with safe padding and a solid magenta background for local extraction.

@@ -1,0 +1,34 @@
+{
+  "player_spawn": [
+    768,
+    760
+  ],
+  "exit_zones": [
+    {
+      "id": "south_exit",
+      "rect": [
+        690,
+        944,
+        160,
+        80
+      ],
+      "target": "forest_route_01"
+    }
+  ],
+  "encounter_zones": [
+    {
+      "id": "tall_grass_west",
+      "rect": [
+        152,
+        454,
+        260,
+        168
+      ],
+      "encounter_table": "forest_low_level"
+    }
+  ],
+  "source_image_size": {
+    "width": 944,
+    "height": 1024
+  }
+}

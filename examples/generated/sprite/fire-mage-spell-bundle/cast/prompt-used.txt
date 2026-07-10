@@ -1,0 +1,1 @@
+Use $generate2dsprite to create a side-view fire mage spell bundle with body-only cast animation, separate fire projectile, separate impact burst, pixel-inspired fantasy style, transparent PNG exports, GIF previews, and prompt-used metadata.

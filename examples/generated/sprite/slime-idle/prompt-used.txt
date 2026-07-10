@@ -1,0 +1,1 @@
+Use $generate2dsprite to create a 2x2 idle animation for a cute blue slime, top-down RPG style, consistent scale, centered body, transparent output, frame PNGs, and GIF preview.

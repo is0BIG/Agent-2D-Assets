@@ -1,0 +1,14 @@
+{
+  "skill": "$generate2dsprite",
+  "bundle": "spell_bundle",
+  "engine_targets": [
+    "Godot",
+    "Unity",
+    "raw_2d"
+  ],
+  "assets": {
+    "cast": "cast/sheet-transparent.png",
+    "projectile": "projectile/sheet-transparent.png",
+    "impact": "impact/sheet-transparent.png"
+  }
+}

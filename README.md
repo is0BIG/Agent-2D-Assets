@@ -285,6 +285,9 @@ cp -R ./skills/* ~/.codex/skills/
 - [`$generate2dmap` 5 个示例](./examples/prompts/generate2dmap.md)
 - [`$generate2daudio` 5 个示例](./examples/prompts/generate2daudio.md)
 - [示例总览](./examples/prompts/README.md)
+- [真实产物总览：PNG / GIF / WAV / JSON](./examples/generated/README.md)
+
+示例产物已经提交到仓库：sprite 和 map 输出位于 [examples/generated](./examples/generated)，音频 WAV 输出位于 [examples/audio](./examples/audio)。
 
 ### Sprite
 

@@ -529,6 +529,9 @@ Each skill now has 5 copy-ready examples with purpose, prompt, expected outputs,
 - [5 `$generate2dmap` examples](./examples/prompts/generate2dmap.md)
 - [5 `$generate2daudio` examples](./examples/prompts/generate2daudio.md)
 - [Example overview](./examples/prompts/README.md)
+- [Generated output overview: PNG / GIF / WAV / JSON](./examples/generated/README.md)
+
+Committed example outputs are available in [examples/generated](./examples/generated) for sprites/maps and [examples/audio](./examples/audio) for WAV packs.
 
 ## Suggested Prompts
 

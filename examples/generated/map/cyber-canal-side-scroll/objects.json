@@ -1,0 +1,59 @@
+{
+  "stage_canvas": {
+    "width": 1672,
+    "height": 941
+  },
+  "platform_objects": [
+    {
+      "id": "lower_walkway",
+      "rect": [
+        98,
+        740,
+        734,
+        72
+      ],
+      "collision": true
+    },
+    {
+      "id": "upper_catwalk",
+      "rect": [
+        860,
+        510,
+        480,
+        56
+      ],
+      "collision": true
+    },
+    {
+      "id": "exit_door",
+      "rect": [
+        1488,
+        586,
+        80,
+        160
+      ],
+      "scene_hook": "exit"
+    }
+  ],
+  "hazards": [
+    {
+      "id": "canal_spark",
+      "rect": [
+        654,
+        704,
+        96,
+        48
+      ],
+      "damage": 1
+    }
+  ],
+  "pickups": [
+    {
+      "id": "energy_cell",
+      "position": [
+        1120,
+        452
+      ]
+    }
+  ]
+}

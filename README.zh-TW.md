@@ -110,6 +110,9 @@ Godot 建議：`spell-cast.wav` 與 `spell-hit.wav` 作為一次性音效，`fir
 - [`$generate2dmap` 5 個示例](./examples/prompts/generate2dmap.md)
 - [`$generate2daudio` 5 個示例](./examples/prompts/generate2daudio.md)
 - [示例總覽](./examples/prompts/README.md)
+- [真實產物總覽：PNG / GIF / WAV / JSON](./examples/generated/README.md)
+
+已提交的示例產物位於 [examples/generated](./examples/generated)，音訊 WAV 範例位於 [examples/audio](./examples/audio)。
 
 ## 安裝
 

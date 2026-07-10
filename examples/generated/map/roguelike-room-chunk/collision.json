@@ -1,0 +1,21 @@
+{
+  "wall_tiles": "outer_ring_except_exit_sockets",
+  "blocked_tiles": [
+    [
+      2,
+      2
+    ],
+    [
+      13,
+      2
+    ],
+    [
+      3,
+      9
+    ],
+    [
+      12,
+      9
+    ]
+  ]
+}

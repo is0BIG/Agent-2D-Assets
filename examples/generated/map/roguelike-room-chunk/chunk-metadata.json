@@ -1,0 +1,56 @@
+{
+  "chunk_id": "stone_room_cross_01",
+  "tile_size": 64,
+  "cols": 16,
+  "rows": 12,
+  "exits": {
+    "north": {
+      "socket": [
+        7,
+        0
+      ],
+      "width_tiles": 2
+    },
+    "south": {
+      "socket": [
+        7,
+        11
+      ],
+      "width_tiles": 2
+    },
+    "west": {
+      "socket": [
+        0,
+        5
+      ],
+      "width_tiles": 2
+    },
+    "east": {
+      "socket": [
+        15,
+        5
+      ],
+      "width_tiles": 2
+    }
+  },
+  "spawn_markers": [
+    {
+      "id": "room_center",
+      "tile": [
+        8,
+        6
+      ]
+    },
+    {
+      "id": "north_patrol",
+      "tile": [
+        8,
+        3
+      ]
+    }
+  ],
+  "prop_variants": [
+    "cracked_column",
+    "torch_pair"
+  ]
+}

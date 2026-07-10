@@ -1,0 +1,399 @@
+{
+  "input": "examples/generated/sprite/forest-prop-pack/prop-pack-raw.png",
+  "rows": 3,
+  "cols": 3,
+  "key_color": "#ff00ff",
+  "threshold": 48,
+  "tolerance": 48,
+  "edge_threshold": 150,
+  "edge_feather": 2,
+  "despill": true,
+  "component_mode": "largest",
+  "component_padding": 8,
+  "min_component_area": 100,
+  "edge_touch_margin": 0,
+  "accepted": [
+    {
+      "index": 0,
+      "label": "small-rock",
+      "grid": [
+        0,
+        0
+      ],
+      "source_box": [
+        0,
+        0,
+        418,
+        418
+      ],
+      "component_mode": "largest",
+      "component_count": 2,
+      "selected_component_area": 44039,
+      "selected_component_bbox": [
+        88,
+        118,
+        372,
+        358
+      ],
+      "crop_bbox": [
+        88,
+        118,
+        372,
+        358
+      ],
+      "padded_crop_bbox": [
+        80,
+        110,
+        380,
+        366
+      ],
+      "edge_touch": false,
+      "output_size": [
+        300,
+        256
+      ],
+      "status": "accepted",
+      "image": "examples/generated/sprite/forest-prop-pack/props/small-rock/prop.png"
+    },
+    {
+      "index": 1,
+      "label": "stump",
+      "grid": [
+        0,
+        1
+      ],
+      "source_box": [
+        418,
+        0,
+        836,
+        418
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 65049,
+      "selected_component_bbox": [
+        42,
+        90,
+        363,
+        373
+      ],
+      "crop_bbox": [
+        42,
+        90,
+        363,
+        373
+      ],
+      "padded_crop_bbox": [
+        34,
+        82,
+        371,
+        381
+      ],
+      "edge_touch": false,
+      "output_size": [
+        337,
+        299
+      ],
+      "status": "accepted",
+      "image": "examples/generated/sprite/forest-prop-pack/props/stump/prop.png"
+    },
+    {
+      "index": 2,
+      "label": "bush",
+      "grid": [
+        0,
+        2
+      ],
+      "source_box": [
+        836,
+        0,
+        1254,
+        418
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 59248,
+      "selected_component_bbox": [
+        25,
+        81,
+        328,
+        370
+      ],
+      "crop_bbox": [
+        25,
+        81,
+        328,
+        370
+      ],
+      "padded_crop_bbox": [
+        17,
+        73,
+        336,
+        378
+      ],
+      "edge_touch": false,
+      "output_size": [
+        319,
+        305
+      ],
+      "status": "accepted",
+      "image": "examples/generated/sprite/forest-prop-pack/props/bush/prop.png"
+    },
+    {
+      "index": 3,
+      "label": "mushroom-cluster",
+      "grid": [
+        1,
+        0
+      ],
+      "source_box": [
+        0,
+        418,
+        418,
+        836
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 48096,
+      "selected_component_bbox": [
+        95,
+        55,
+        361,
+        329
+      ],
+      "crop_bbox": [
+        95,
+        55,
+        361,
+        329
+      ],
+      "padded_crop_bbox": [
+        87,
+        47,
+        369,
+        337
+      ],
+      "edge_touch": false,
+      "output_size": [
+        282,
+        290
+      ],
+      "status": "accepted",
+      "image": "examples/generated/sprite/forest-prop-pack/props/mushroom-cluster/prop.png"
+    },
+    {
+      "index": 4,
+      "label": "signpost",
+      "grid": [
+        1,
+        1
+      ],
+      "source_box": [
+        418,
+        418,
+        836,
+        836
+      ],
+      "component_mode": "largest",
+      "component_count": 2,
+      "selected_component_area": 34999,
+      "selected_component_bbox": [
+        102,
+        44,
+        326,
+        329
+      ],
+      "crop_bbox": [
+        102,
+        44,
+        326,
+        329
+      ],
+      "padded_crop_bbox": [
+        94,
+        36,
+        334,
+        337
+      ],
+      "edge_touch": false,
+      "output_size": [
+        240,
+        301
+      ],
+      "status": "accepted",
+      "image": "examples/generated/sprite/forest-prop-pack/props/signpost/prop.png"
+    },
+    {
+      "index": 5,
+      "label": "crate",
+      "grid": [
+        1,
+        2
+      ],
+      "source_box": [
+        836,
+        418,
+        1254,
+        836
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 66646,
+      "selected_component_bbox": [
+        6,
+        35,
+        320,
+        347
+      ],
+      "crop_bbox": [
+        6,
+        35,
+        320,
+        347
+      ],
+      "padded_crop_bbox": [
+        0,
+        27,
+        328,
+        355
+      ],
+      "edge_touch": false,
+      "output_size": [
+        328,
+        328
+      ],
+      "status": "accepted",
+      "image": "examples/generated/sprite/forest-prop-pack/props/crate/prop.png"
+    },
+    {
+      "index": 6,
+      "label": "flower-patch",
+      "grid": [
+        2,
+        0
+      ],
+      "source_box": [
+        0,
+        836,
+        418,
+        1254
+      ],
+      "component_mode": "largest",
+      "component_count": 2,
+      "selected_component_area": 54233,
+      "selected_component_bbox": [
+        83,
+        15,
+        368,
+        296
+      ],
+      "crop_bbox": [
+        83,
+        15,
+        368,
+        296
+      ],
+      "padded_crop_bbox": [
+        75,
+        7,
+        376,
+        304
+      ],
+      "edge_touch": false,
+      "output_size": [
+        301,
+        297
+      ],
+      "status": "accepted",
+      "image": "examples/generated/sprite/forest-prop-pack/props/flower-patch/prop.png"
+    },
+    {
+      "index": 7,
+      "label": "lantern",
+      "grid": [
+        2,
+        1
+      ],
+      "source_box": [
+        418,
+        836,
+        836,
+        1254
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 43043,
+      "selected_component_bbox": [
+        82,
+        0,
+        306,
+        316
+      ],
+      "crop_bbox": [
+        82,
+        0,
+        306,
+        316
+      ],
+      "padded_crop_bbox": [
+        74,
+        0,
+        314,
+        324
+      ],
+      "edge_touch": true,
+      "output_size": [
+        240,
+        324
+      ],
+      "status": "accepted",
+      "image": "examples/generated/sprite/forest-prop-pack/props/lantern/prop.png"
+    },
+    {
+      "index": 8,
+      "label": "broken-pot",
+      "grid": [
+        2,
+        2
+      ],
+      "source_box": [
+        836,
+        836,
+        1254,
+        1254
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 56417,
+      "selected_component_bbox": [
+        17,
+        22,
+        310,
+        304
+      ],
+      "crop_bbox": [
+        17,
+        22,
+        310,
+        304
+      ],
+      "padded_crop_bbox": [
+        9,
+        14,
+        318,
+        312
+      ],
+      "edge_touch": false,
+      "output_size": [
+        309,
+        298
+      ],
+      "status": "accepted",
+      "image": "examples/generated/sprite/forest-prop-pack/props/broken-pot/prop.png"
+    }
+  ],
+  "rejected": [],
+  "edge_touch_props": [
+    "lantern"
+  ]
+}

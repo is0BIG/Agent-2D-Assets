@@ -1,0 +1,1 @@
+Use $generate2dsprite to create a 2x2 impact animation for a blue ice burst, top-down RPG combat style, no character body, strong readable silhouette, transparent output, centered frames, and GIF preview.

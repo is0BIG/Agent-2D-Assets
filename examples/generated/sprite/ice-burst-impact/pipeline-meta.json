@@ -1,0 +1,161 @@
+{
+  "target": "asset",
+  "mode": "impact",
+  "prompt": "Use $generate2dsprite to create a 2x2 impact animation for a blue ice burst, top-down RPG combat style, no character body, strong readable silhouette, transparent output, centered frames, and GIF preview.\n",
+  "role": "",
+  "input": "examples/generated/_raw/sprite-ice-burst-raw.png",
+  "key_color": "#ff00ff",
+  "threshold": 48,
+  "tolerance": 48,
+  "edge_threshold": 150,
+  "edge_feather": 2,
+  "despill": true,
+  "duration": 120,
+  "rows": 2,
+  "cols": 2,
+  "cell_size": 128,
+  "fit_scale": 0.85,
+  "trim_border": 4,
+  "edge_clean_depth": 3,
+  "align": "center",
+  "shared_scale": true,
+  "apng": false,
+  "webp": false,
+  "component_mode": "all",
+  "component_padding": 0,
+  "min_component_area": 1,
+  "edge_touch_margin": 0,
+  "frame_labels": [
+    "impact-1",
+    "impact-2",
+    "impact-3",
+    "impact-4"
+  ],
+  "frames": [
+    {
+      "grid": [
+        0,
+        0
+      ],
+      "source_box": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "component_mode": "all",
+      "component_count": 38,
+      "selected_component_area": null,
+      "selected_component_bbox": null,
+      "crop_bbox": [
+        149,
+        123,
+        499,
+        485
+      ],
+      "edge_touch": false,
+      "output_size": [
+        77,
+        79
+      ],
+      "paste_position": [
+        25,
+        24
+      ]
+    },
+    {
+      "grid": [
+        0,
+        1
+      ],
+      "source_box": [
+        627,
+        0,
+        1254,
+        627
+      ],
+      "component_mode": "all",
+      "component_count": 75,
+      "selected_component_area": null,
+      "selected_component_bbox": null,
+      "crop_bbox": [
+        47,
+        100,
+        482,
+        518
+      ],
+      "edge_touch": false,
+      "output_size": [
+        96,
+        92
+      ],
+      "paste_position": [
+        16,
+        18
+      ]
+    },
+    {
+      "grid": [
+        1,
+        0
+      ],
+      "source_box": [
+        0,
+        627,
+        627,
+        1254
+      ],
+      "component_mode": "all",
+      "component_count": 87,
+      "selected_component_area": null,
+      "selected_component_bbox": null,
+      "crop_bbox": [
+        80,
+        48,
+        573,
+        497
+      ],
+      "edge_touch": false,
+      "output_size": [
+        108,
+        99
+      ],
+      "paste_position": [
+        10,
+        14
+      ]
+    },
+    {
+      "grid": [
+        1,
+        1
+      ],
+      "source_box": [
+        627,
+        627,
+        1254,
+        1254
+      ],
+      "component_mode": "all",
+      "component_count": 265,
+      "selected_component_area": null,
+      "selected_component_bbox": null,
+      "crop_bbox": [
+        41,
+        40,
+        497,
+        489
+      ],
+      "edge_touch": false,
+      "output_size": [
+        100,
+        99
+      ],
+      "paste_position": [
+        14,
+        14
+      ]
+    }
+  ],
+  "edge_touch_frames": []
+}

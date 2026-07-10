@@ -1,0 +1,181 @@
+{
+  "target": "creature",
+  "mode": "idle",
+  "prompt": "Use $generate2dsprite to create a 2x2 idle animation for a cute blue slime, top-down RPG style, consistent scale, centered body, transparent output, frame PNGs, and GIF preview.\n",
+  "role": "",
+  "input": "examples/generated/_raw/sprite-slime-idle-raw.png",
+  "key_color": "#ff00ff",
+  "threshold": 48,
+  "tolerance": 48,
+  "edge_threshold": 150,
+  "edge_feather": 2,
+  "despill": true,
+  "duration": 180,
+  "rows": 2,
+  "cols": 2,
+  "cell_size": 128,
+  "fit_scale": 0.85,
+  "trim_border": 4,
+  "edge_clean_depth": 3,
+  "align": "center",
+  "shared_scale": true,
+  "apng": false,
+  "webp": false,
+  "component_mode": "largest",
+  "component_padding": 0,
+  "min_component_area": 1,
+  "edge_touch_margin": 0,
+  "frame_labels": [
+    "idle-1",
+    "idle-2",
+    "idle-3",
+    "idle-4"
+  ],
+  "frames": [
+    {
+      "grid": [
+        0,
+        0
+      ],
+      "source_box": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 97723,
+      "selected_component_bbox": [
+        119,
+        128,
+        502,
+        505
+      ],
+      "crop_bbox": [
+        119,
+        128,
+        502,
+        505
+      ],
+      "edge_touch": false,
+      "output_size": [
+        108,
+        107
+      ],
+      "paste_position": [
+        10,
+        10
+      ]
+    },
+    {
+      "grid": [
+        0,
+        1
+      ],
+      "source_box": [
+        627,
+        0,
+        1254,
+        627
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 97712,
+      "selected_component_bbox": [
+        119,
+        128,
+        501,
+        504
+      ],
+      "crop_bbox": [
+        119,
+        128,
+        501,
+        504
+      ],
+      "edge_touch": false,
+      "output_size": [
+        108,
+        106
+      ],
+      "paste_position": [
+        10,
+        11
+      ]
+    },
+    {
+      "grid": [
+        1,
+        0
+      ],
+      "source_box": [
+        0,
+        627,
+        627,
+        1254
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 97732,
+      "selected_component_bbox": [
+        119,
+        128,
+        502,
+        504
+      ],
+      "crop_bbox": [
+        119,
+        128,
+        502,
+        504
+      ],
+      "edge_touch": false,
+      "output_size": [
+        108,
+        106
+      ],
+      "paste_position": [
+        10,
+        11
+      ]
+    },
+    {
+      "grid": [
+        1,
+        1
+      ],
+      "source_box": [
+        627,
+        627,
+        1254,
+        1254
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 97685,
+      "selected_component_bbox": [
+        119,
+        128,
+        501,
+        504
+      ],
+      "crop_bbox": [
+        119,
+        128,
+        501,
+        504
+      ],
+      "edge_touch": false,
+      "output_size": [
+        108,
+        106
+      ],
+      "paste_position": [
+        10,
+        11
+      ]
+    }
+  ],
+  "edge_touch_frames": []
+}

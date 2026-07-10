@@ -1,0 +1,161 @@
+{
+  "target": "asset",
+  "mode": "projectile",
+  "prompt": "Fire mage bundle projectile: compact looping fireball VFX, transparent output, GIF preview, and metadata.\n",
+  "role": "",
+  "input": "examples/generated/_raw/sprite-fire-projectile-raw.png",
+  "key_color": "#ff00ff",
+  "threshold": 48,
+  "tolerance": 48,
+  "edge_threshold": 150,
+  "edge_feather": 2,
+  "despill": true,
+  "duration": 110,
+  "rows": 2,
+  "cols": 2,
+  "cell_size": 128,
+  "fit_scale": 0.85,
+  "trim_border": 4,
+  "edge_clean_depth": 3,
+  "align": "center",
+  "shared_scale": true,
+  "apng": false,
+  "webp": false,
+  "component_mode": "all",
+  "component_padding": 0,
+  "min_component_area": 1,
+  "edge_touch_margin": 0,
+  "frame_labels": [
+    "projectile-1",
+    "projectile-2",
+    "projectile-3",
+    "projectile-4"
+  ],
+  "frames": [
+    {
+      "grid": [
+        0,
+        0
+      ],
+      "source_box": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "component_mode": "all",
+      "component_count": 12,
+      "selected_component_area": null,
+      "selected_component_bbox": null,
+      "crop_bbox": [
+        158,
+        149,
+        485,
+        457
+      ],
+      "edge_touch": false,
+      "output_size": [
+        104,
+        97
+      ],
+      "paste_position": [
+        12,
+        15
+      ]
+    },
+    {
+      "grid": [
+        0,
+        1
+      ],
+      "source_box": [
+        627,
+        0,
+        1254,
+        627
+      ],
+      "component_mode": "all",
+      "component_count": 14,
+      "selected_component_area": null,
+      "selected_component_bbox": null,
+      "crop_bbox": [
+        138,
+        135,
+        480,
+        462
+      ],
+      "edge_touch": false,
+      "output_size": [
+        108,
+        104
+      ],
+      "paste_position": [
+        10,
+        12
+      ]
+    },
+    {
+      "grid": [
+        1,
+        0
+      ],
+      "source_box": [
+        0,
+        627,
+        627,
+        1254
+      ],
+      "component_mode": "all",
+      "component_count": 17,
+      "selected_component_area": null,
+      "selected_component_bbox": null,
+      "crop_bbox": [
+        154,
+        125,
+        489,
+        437
+      ],
+      "edge_touch": false,
+      "output_size": [
+        106,
+        99
+      ],
+      "paste_position": [
+        11,
+        14
+      ]
+    },
+    {
+      "grid": [
+        1,
+        1
+      ],
+      "source_box": [
+        627,
+        627,
+        1254,
+        1254
+      ],
+      "component_mode": "all",
+      "component_count": 10,
+      "selected_component_area": null,
+      "selected_component_bbox": null,
+      "crop_bbox": [
+        136,
+        130,
+        426,
+        439
+      ],
+      "edge_touch": false,
+      "output_size": [
+        92,
+        98
+      ],
+      "paste_position": [
+        18,
+        15
+      ]
+    }
+  ],
+  "edge_touch_frames": []
+}

@@ -1,0 +1,1 @@
+Fire mage bundle impact: compact fire burst VFX, transparent output, GIF preview, and metadata.

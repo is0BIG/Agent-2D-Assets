@@ -1,0 +1,47 @@
+{
+  "type": "coarse_shapes",
+  "solids": [
+    {
+      "id": "north_tree_line",
+      "shape": "rect",
+      "rect": [
+        0,
+        0,
+        1536,
+        160
+      ]
+    },
+    {
+      "id": "shrine_blocker",
+      "shape": "rect",
+      "rect": [
+        628,
+        246,
+        260,
+        148
+      ]
+    },
+    {
+      "id": "water_edge",
+      "shape": "polyline",
+      "points": [
+        [
+          0,
+          812
+        ],
+        [
+          380,
+          774
+        ],
+        [
+          760,
+          838
+        ],
+        [
+          1536,
+          790
+        ]
+      ]
+    }
+  ]
+}

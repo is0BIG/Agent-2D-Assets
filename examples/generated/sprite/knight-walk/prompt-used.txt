@@ -1,0 +1,1 @@
+Use $generate2dsprite to create a 4-direction top-down walk sheet for a tiny armored knight, 4x4 grid, directions down/left/right/up, consistent scale, feet aligned, transparent PNG output, per-direction strips, per-direction GIF previews, and metadata for Godot.
